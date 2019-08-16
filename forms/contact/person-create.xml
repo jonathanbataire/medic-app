@@ -1,0 +1,314 @@
+<?xml version="1.0"?>
+<h:html xmlns="http://www.w3.org/2002/xforms" xmlns:ev="http://www.w3.org/2001/xml-events" xmlns:h="http://www.w3.org/1999/xhtml" xmlns:jr="http://openrosa.org/javarosa" xmlns:orx="http://openrosa.org/xforms" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <h:head>
+    <h:title>New Person Registration</h:title>
+    <model>
+      <instance>
+        <data delimiter="#" id="contact:person:create" prefix="J1!contact:person:create!" version="2019-08-16 11:09:41">
+          <inputs>
+            <meta>
+              <location>
+                <lat/>
+                <long/>
+                <error/>
+                <message/>
+              </location>
+            </meta>
+            <user>
+              <facility_id/>
+            </user>
+          </inputs>
+          <person>
+            <type>person</type>
+            <parent>PARENT</parent>
+            <name/>
+            <date_of_birth/>
+            <date_of_birth_method/>
+            <age/>
+            <sex/>
+            <phone/>
+            <alternate_phone/>
+            <person_phone>
+              <hh_has_phone/>
+              <tel_number>
+                <phone1/>
+                <phone2/>
+              </tel_number>
+            </person_phone>
+            <ephemeral_dob>
+              <g_sex/>
+              <dob_method/>
+              <dob_calendar/>
+              <age_years>0</age_years>
+              <approx_birth_year/>
+              <dob_approx/>
+              <dob_raw/>
+              <dob_iso/>
+              <current_age>0</current_age>
+              <dob_debug/>
+            </ephemeral_dob>
+            <currently_pregnant/>
+            <chw_note_pregnant/>
+            <lmc_form>
+              <is_last_cycle_known/>
+              <start_date_cycle/>
+              <appro_date_lmc/>
+            </lmc_form>
+            <relationship_to_head>
+              <relationship_type/>
+              <relationship_other/>
+            </relationship_to_head>
+            <geolocation/>
+          </person>
+          <age_in_weeks/>
+          <birth_registration>
+            <place_of_delivery/>
+            <place_of_delivery_other/>
+            <birth_weight/>
+          </birth_registration>
+          <meta tag="hidden">
+            <instanceID/>
+          </meta>
+        </data>
+      </instance>
+      <bind nodeset="/data/inputs" relevant="0"/>
+      <bind nodeset="/data/inputs/user/facility_id" type="string"/>
+      <bind nodeset="/data/person/type" type="string"/>
+      <bind nodeset="/data/person/parent" type="string"/>
+      <bind nodeset="/data/person/name" required="true()" type="string"/>
+      <bind calculate=" /data/person/ephemeral_dob/dob_iso " nodeset="/data/person/date_of_birth" required="true()" type="string"/>
+      <bind calculate="../ephemeral_dob/dob_method" nodeset="/data/person/date_of_birth_method" type="string"/>
+      <bind calculate="floor(difference-in-months(date( /data/person/date_of_birth ),today()) div 12)" nodeset="/data/person/age" type="string"/>
+      <bind calculate=" /data/person/ephemeral_dob/g_sex " nodeset="/data/person/sex" type="string"/>
+      <bind calculate=" /data/person/person_phone/tel_number/phone1 " nodeset="/data/person/phone" type="string"/>
+      <bind calculate=" /data/person/person_phone/tel_number/phone2 " nodeset="/data/person/alternate_phone" type="string"/>
+      <bind nodeset="/data/person/person_phone/hh_has_phone" required="true()" type="select1"/>
+      <bind nodeset="/data/person/person_phone/tel_number" relevant="selected( /data/person/person_phone/hh_has_phone ,'true')"/>
+      <bind constraint="regex(.,'^\+256\s?(\d{3}\s?){3}|^07\d{2}\s?(\d{3}\s?){2}')" jr:constraintMsg="Please make sure the number is not already in use by another person and is in the format +256 7XX XXX XXX or 07XX XXX XXX." nodeset="/data/person/person_phone/tel_number/phone1" required="true()" type="tel"/>
+      <bind constraint="regex(.,'^\+256\s?(\d{3}\s?){3}|^07\d{2}\s?(\d{3}\s?){2}')" jr:constraintMsg="Please make sure the number is not already in use by another person and is in the format +256 7XX XXX XXX or 07XX XXX XXX." nodeset="/data/person/person_phone/tel_number/phone2" required="false()" type="tel"/>
+      <bind nodeset="/data/person/ephemeral_dob/g_sex" required="true()" type="select1"/>
+      <bind nodeset="/data/person/ephemeral_dob/dob_method" required="true()" type="select1"/>
+      <bind constraint="floor(decimal-date-time(.)) &lt;= floor(decimal-date-time(today()))" jr:constraintMsg="Date must be before today" nodeset="/data/person/ephemeral_dob/dob_calendar" relevant="selected( /data/person/ephemeral_dob/dob_method ,'date_of_birth')" required="true()" type="date"/>
+      <bind constraint=". &gt;= 0 and . &lt;= 130" jr:constraintMsg="Age must be between 0 and 130" nodeset="/data/person/ephemeral_dob/age_years" relevant="selected( /data/person/ephemeral_dob/dob_method ,'age')" required="true()" type="int"/>
+      <bind calculate="int(format-date-time(today(), &quot;%Y&quot;))- /data/person/ephemeral_dob/age_years " nodeset="/data/person/ephemeral_dob/approx_birth_year" type="string"/>
+      <bind calculate="date(concat(string( /data/person/ephemeral_dob/approx_birth_year ),'-',string(format-date-time(today(), &quot;%m&quot;)),'-',string(format-date-time(today(), &quot;%d&quot;))))" nodeset="/data/person/ephemeral_dob/dob_approx" type="string"/>
+      <bind calculate="if(not(selected( ../dob_method,'age')), 
+ /data/person/ephemeral_dob/dob_calendar ,
+ /data/person/ephemeral_dob/dob_approx )" nodeset="/data/person/ephemeral_dob/dob_raw" type="string"/>
+      <bind calculate="format-date-time(../dob_raw,&quot;%Y-%m-%d&quot;)" nodeset="/data/person/ephemeral_dob/dob_iso" type="string"/>
+      <bind calculate="floor(difference-in-months(date( /data/person/ephemeral_dob/dob_iso ),today()) div 12)" nodeset="/data/person/ephemeral_dob/current_age" type="string"/>
+      <bind nodeset="/data/person/ephemeral_dob/dob_debug" readonly="true()" relevant="0" type="string"/>
+      <bind nodeset="/data/person/currently_pregnant" relevant=" /data/person/ephemeral_dob/current_age  &gt;= 12 and  /data/person/ephemeral_dob/current_age  &lt;= 52 and  /data/person/sex ='female'" required="true()" type="select1"/>
+      <bind nodeset="/data/person/chw_note_pregnant" readonly="true()" relevant=" /data/person/currently_pregnant ='true'" type="string"/>
+      <bind nodeset="/data/person/lmc_form" relevant=" /data/person/currently_pregnant ='false'"/>
+      <bind nodeset="/data/person/lmc_form/is_last_cycle_known" required="true()" type="select1"/>
+      <bind nodeset="/data/person/lmc_form/start_date_cycle" relevant=" /data/person/lmc_form/is_last_cycle_known ='true'" required="true()" type="date"/>
+      <bind nodeset="/data/person/lmc_form/appro_date_lmc" relevant=" /data/person/lmc_form/is_last_cycle_known ='false'" required="true()" type="select1"/>
+      <bind nodeset="/data/person/relationship_to_head/relationship_type" required="true()" type="select1"/>
+      <bind nodeset="/data/person/relationship_to_head/relationship_other" relevant=" /data/person/relationship_to_head/relationship_type ='other'" required="true()" type="string"/>
+      <bind calculate="concat(../../inputs/meta/location/lat, concat(' ', ../../inputs/meta/location/long))" nodeset="/data/person/geolocation" type="string"/>
+      <bind calculate="floor( (decimal-date-time(today()) - decimal-date-time( /data/person/date_of_birth )) div 7 )" nodeset="/data/age_in_weeks" type="string"/>
+      <bind nodeset="/data/birth_registration" relevant=" /data/age_in_weeks  &lt; 6"/>
+      <bind nodeset="/data/birth_registration/place_of_delivery" type="select1"/>
+      <bind nodeset="/data/birth_registration/place_of_delivery_other" relevant="selected( /data/birth_registration/place_of_delivery ,'other')" type="string"/>
+      <bind nodeset="/data/birth_registration/birth_weight" type="decimal"/>
+      <bind calculate="concat('uuid:', uuid())" nodeset="/data/meta/instanceID" readonly="true()" type="string"/>
+    </model>
+  </h:head>
+  <h:body>
+    <group ref="/data/inputs">
+      <label></label>
+      <group ref="/data/inputs/user">
+        <label></label>
+        <input ref="/data/inputs/user/facility_id">
+          <label>Facility ID for the parent user</label>
+        </input>
+      </group>
+    </group>
+    <group appearance="field-list" ref="/data/person">
+      <label></label>
+      <input appearance="hidden" ref="/data/person/type">
+        <label>Person Type</label>
+        <hint>mandatory</hint>
+      </input>
+      <input appearance="hidden" ref="/data/person/parent">
+        <label>Parent</label>
+        <hint>mandatory</hint>
+      </input>
+      <input ref="/data/person/name">
+        <label>Name</label>
+      </input>
+      <group appearance="field-list" ref="/data/person/person_phone">
+        <label>Person's Phone Information</label>
+        <select1 appearance="horizontal" ref="/data/person/person_phone/hh_has_phone">
+          <label>Does <output value=" /data/person/name "/> have a Phone Number</label>
+          <item>
+            <label>Yes</label>
+            <value>true</value>
+          </item>
+          <item>
+            <label>No</label>
+            <value>false</value>
+          </item>
+        </select1>
+        <group ref="/data/person/person_phone/tel_number">
+          <label></label>
+          <input appearance="numbers" ref="/data/person/person_phone/tel_number/phone1">
+            <label>Primary Mobile Number</label>
+            <hint>Use one of the following format: +256 7XX XXX XXX also please ensure the number is not already registered</hint>
+          </input>
+          <input appearance="numbers" ref="/data/person/person_phone/tel_number/phone2">
+            <label>Secondary Mobile Number</label>
+            <hint>Use one of the following format: +256 7XX XXX XXX also please ensure the number is not already registered</hint>
+          </input>
+        </group>
+      </group>
+      <group ref="/data/person/ephemeral_dob">
+        <label></label>
+        <select1 appearance="horizontal" ref="/data/person/ephemeral_dob/g_sex">
+          <label>Gender</label>
+          <item>
+            <label>Female</label>
+            <value>female</value>
+          </item>
+          <item>
+            <label>Male</label>
+            <value>male</value>
+          </item>
+        </select1>
+        <select1 appearance="horizontal" ref="/data/person/ephemeral_dob/dob_method">
+          <label>Date of Birth</label>
+          <hint>Please select a date of birth method to use</hint>
+          <item>
+            <label>Date of birth (preferred)</label>
+            <value>date_of_birth</value>
+          </item>
+          <item>
+            <label>Current Age</label>
+            <value>age</value>
+          </item>
+        </select1>
+        <input ref="/data/person/ephemeral_dob/dob_calendar">
+          <label>Age</label>
+          <hint>Date of Birth</hint>
+        </input>
+        <input ref="/data/person/ephemeral_dob/age_years">
+          <label>Age</label>
+          <hint>Years</hint>
+        </input>
+        <input ref="/data/person/ephemeral_dob/dob_debug">
+          <label>Year: <output value=" /data/person/ephemeral_dob/approx_birth_year "/>
+DOB Approx: <output value=" /data/person/ephemeral_dob/dob_approx "/>
+DOB Calendar: <output value=" /data/person/ephemeral_dob/dob_calendar "/>
+DOB ISO: <output value=" /data/person/ephemeral_dob/dob_iso "/></label></input>
+      </group>
+      <select1 ref="/data/person/currently_pregnant">
+        <label>Is <output value=" /data/person/name "/> currently pregnant?</label>
+        <item>
+          <label>Yes</label>
+          <value>true</value>
+        </item>
+        <item>
+          <label>No</label>
+          <value>false</value>
+        </item>
+      </select1>
+      <input ref="/data/person/chw_note_pregnant">
+        <label>Please fill out a pregnancy registration form for <output value=" /data/person/name "/> after submitting this household registration if they have started their ANC visits, and encourage mother to go to health facility for pregnancy confirmation if they have not started ANC clinic</label>
+      </input>
+      <group appearance="field-list" ref="/data/person/lmc_form">
+        <label></label>
+        <select1 ref="/data/person/lmc_form/is_last_cycle_known">
+          <label>Does <output value=" /data/person/name "/> know the start date of last cycle?</label>
+          <item>
+            <label>Yes</label>
+            <value>true</value>
+          </item>
+          <item>
+            <label>No</label>
+            <value>false</value>
+          </item>
+        </select1>
+        <input ref="/data/person/lmc_form/start_date_cycle">
+          <label>Start date of the last cycle</label>
+        </input>
+        <select1 ref="/data/person/lmc_form/appro_date_lmc">
+          <label>Approximate date of last cycle</label>
+          <item>
+            <label>Up to 2 months</label>
+            <value>up_to_2</value>
+          </item>
+          <item>
+            <label>Up to 3 months</label>
+            <value>up_to_3</value>
+          </item>
+          <item>
+            <label>Up to 4 months</label>
+            <value>up_to_4</value>
+          </item>
+          <item>
+            <label>Between 5 to 6 months ago</label>
+            <value>btn_5_6</value>
+          </item>
+          <item>
+            <label>Between 7 to 8 months ago</label>
+            <value>btn_7_8</value>
+          </item>
+        </select1>
+      </group>
+      <group ref="/data/person/relationship_to_head">
+        <label></label>
+        <select1 ref="/data/person/relationship_to_head/relationship_type">
+          <label>Relationship to Household Head</label>
+          <item>
+            <label>Self</label>
+            <value>self</value>
+          </item>
+          <item>
+            <label>Spouse</label>
+            <value>spouse</value>
+          </item>
+          <item>
+            <label>Child</label>
+            <value>child</value>
+          </item>
+          <item>
+            <label>Other (specify)</label>
+            <value>other</value>
+          </item>
+        </select1>
+        <input ref="/data/person/relationship_to_head/relationship_other">
+          <label>Relationship to Household Head</label>
+        </input>
+      </group>
+    </group>
+    <group ref="/data/birth_registration">
+      <label></label>
+      <select1 ref="/data/birth_registration/place_of_delivery">
+        <label>Place of delivery</label>
+        <item>
+          <label>Facility</label>
+          <value>facility</value>
+        </item>
+        <item>
+          <label>Home</label>
+          <value>home</value>
+        </item>
+        <item>
+          <label>On the way to the health facility</label>
+          <value>way</value>
+        </item>
+        <item>
+          <label>Other</label>
+          <value>other</value>
+        </item>
+      </select1>
+      <input ref="/data/birth_registration/place_of_delivery_other">
+        <label>Other (Place of delivery)</label>
+      </input>
+      <input ref="/data/birth_registration/birth_weight">
+        <label>Birth Weight (KG)</label>
+      </input>
+    </group>
+  </h:body>
+</h:html>

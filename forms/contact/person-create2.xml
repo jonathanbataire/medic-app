@@ -1,0 +1,266 @@
+<?xml version="1.0"?>
+<h:html xmlns="http://www.w3.org/2002/xforms" xmlns:ev="http://www.w3.org/2001/xml-events" xmlns:h="http://www.w3.org/1999/xhtml" xmlns:jr="http://openrosa.org/javarosa" xmlns:orx="http://openrosa.org/xforms" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <h:head>
+    <h:title>New Person Registration</h:title>
+    <model>
+      <instance>
+        <data delimiter="#" id="contact:person:create" prefix="J1!contact:person:create!" version="2019-08-14 14:50:34">
+          <person_register>
+            <name/>
+          </person_register>
+          <phone_number_group>
+            <have_phone_number/>
+            <primary_phone_no/>
+            <sec_phone_no/>
+          </phone_number_group>
+          <age_sex>
+            <sex/>
+            <preferred_age/>
+            <age_DOB/>
+            <age_years/>
+          </age_sex>
+          <pregnancy_status>
+            <currently_pregnant/>
+            <chw_note_pregnant/>
+          </pregnancy_status>
+          <lmc_form>
+            <is_last_cycle_known/>
+            <start_date_cycle/>
+            <appro_date_lmc/>
+          </lmc_form>
+          <delivery_form>
+            <delivery_place/>
+            <birth_weight/>
+          </delivery_form>
+          <relationship_to_head>
+            <relationship_type/>
+            <relationship_other/>
+          </relationship_to_head>
+          <group_review>
+            <submit/>
+            <r_summary_details/>
+            <r_patient_details/>
+            <r_followup/>
+            <r_followup_note/>
+          </group_review>
+          <meta tag="hidden">
+            <instanceID/>
+          </meta>
+        </data>
+      </instance>
+      <bind nodeset="/data/person_register/name" required="true()" type="string"/>
+      <bind nodeset="/data/phone_number_group/have_phone_number" required="true()" type="select1"/>
+      <bind constraint="regex(.,'^\+256\s?(\d{3}\s?){3}|^07\d{2}\s?(\d{3}\s?){2}')" jr:constraintMsg="Please make sure the number is not already in use by another person and is in the format +256 7XX XXX XXX or 07XX XXX XXX." nodeset="/data/phone_number_group/primary_phone_no" relevant=" /data/phone_number_group/have_phone_number ='yes'" required="true()" type="tel"/>
+      <bind constraint="regex(.,'^\+256\s?(\d{3}\s?){3}|^07\d{2}\s?(\d{3}\s?){2}')" jr:constraintMsg="Please make sure the number is not already in use by another person and is in the format +256 7XX XXX XXX or 07XX XXX XXX." nodeset="/data/phone_number_group/sec_phone_no" relevant=" /data/phone_number_group/have_phone_number ='yes'" required="false()" type="tel"/>
+      <bind nodeset="/data/age_sex/sex" required="true()" type="select1"/>
+      <bind nodeset="/data/age_sex/preferred_age" required="true()" type="select1"/>
+      <bind nodeset="/data/age_sex/age_DOB" relevant=" /data/age_sex/preferred_age ='DOB'" required="true()" type="date"/>
+      <bind nodeset="/data/age_sex/age_years" relevant=" /data/age_sex/preferred_age ='current_age'" required="true()" type="int"/>
+      <bind nodeset="/data/pregnancy_status" relevant=" /data/age_sex/sex ='female'"/>
+      <bind nodeset="/data/pregnancy_status/currently_pregnant" relevant="( /data/age_sex/age_years &gt;=12 or difference-in-months(  /data/age_sex/age_DOB , today() )&gt;=144)" required="true()" type="select1"/>
+      <bind nodeset="/data/pregnancy_status/chw_note_pregnant" readonly="true()" relevant=" /data/pregnancy_status/currently_pregnant ='yes'" type="string"/>
+      <bind nodeset="/data/lmc_form" relevant=" /data/pregnancy_status/currently_pregnant ='no'"/>
+      <bind nodeset="/data/lmc_form/is_last_cycle_known" required="true()" type="select1"/>
+      <bind nodeset="/data/lmc_form/start_date_cycle" relevant=" /data/lmc_form/is_last_cycle_known ='yes'" required="true()" type="date"/>
+      <bind nodeset="/data/lmc_form/appro_date_lmc" relevant=" /data/lmc_form/is_last_cycle_known ='no'" required="true()" type="select1"/>
+      <bind nodeset="/data/delivery_form" relevant=" /data/pregnancy_status/currently_pregnant ='no'"/>
+      <bind nodeset="/data/delivery_form/delivery_place" required="true()" type="select1"/>
+      <bind nodeset="/data/delivery_form/birth_weight" required="false()" type="string"/>
+      <bind nodeset="/data/relationship_to_head/relationship_type" required="true()" type="select1"/>
+      <bind nodeset="/data/relationship_to_head/relationship_other" relevant=" /data/relationship_to_head/relationship_type ='other'" required="true()" type="string"/>
+      <bind nodeset="/data/group_review/submit" readonly="true()" type="string"/>
+      <bind nodeset="/data/group_review/r_summary_details" readonly="true()" type="string"/>
+      <bind nodeset="/data/group_review/r_patient_details" readonly="true()" type="string"/>
+      <bind nodeset="/data/group_review/r_followup" readonly="true()" type="string"/>
+      <bind nodeset="/data/group_review/r_followup_note" readonly="true()" type="string"/>
+      <bind calculate="concat('uuid:', uuid())" nodeset="/data/meta/instanceID" readonly="true()" type="string"/>
+    </model>
+  </h:head>
+  <h:body class="pages">
+    <group appearance="field-list" ref="/data/person_register">
+      <label></label>
+      <input ref="/data/person_register/name">
+        <label>Name</label>
+      </input>
+    </group>
+    <group appearance="field-list" ref="/data/phone_number_group">
+      <label></label>
+      <select1 ref="/data/phone_number_group/have_phone_number">
+        <label>Does <output value=" /data/person_register/name "/> have a Phone Number?</label>
+        <item>
+          <label>Yes</label>
+          <value>yes</value>
+        </item>
+        <item>
+          <label>No</label>
+          <value>no</value>
+        </item>
+      </select1>
+      <input appearance="numbers" ref="/data/phone_number_group/primary_phone_no">
+        <label>Primary Phone Number</label>
+      </input>
+      <input appearance="numbers" ref="/data/phone_number_group/sec_phone_no">
+        <label>Secondary Phone Number</label>
+      </input>
+    </group>
+    <group appearance="field-list" ref="/data/age_sex">
+      <label></label>
+      <select1 ref="/data/age_sex/sex">
+        <label>Sex</label>
+        <item>
+          <label>Male</label>
+          <value>male</value>
+        </item>
+        <item>
+          <label>Female</label>
+          <value>female</value>
+        </item>
+      </select1>
+      <select1 ref="/data/age_sex/preferred_age">
+        <label>Age</label>
+        <hint>select one option to enter the age of the new household member</hint>
+        <item>
+          <label>Date of birth (preferred)</label>
+          <value>DOB</value>
+        </item>
+        <item>
+          <label>Current age</label>
+          <value>current_age</value>
+        </item>
+      </select1>
+      <input ref="/data/age_sex/age_DOB">
+        <label>Date of birth</label>
+      </input>
+      <input ref="/data/age_sex/age_years">
+        <label>Age (in years and months)</label>
+      </input>
+    </group>
+    <group appearance="field-list" ref="/data/pregnancy_status">
+      <label></label>
+      <select1 ref="/data/pregnancy_status/currently_pregnant">
+        <label>Is <output value=" /data/person_register/name "/> currently pregnant?</label>
+        <item>
+          <label>Yes</label>
+          <value>yes</value>
+        </item>
+        <item>
+          <label>No</label>
+          <value>no</value>
+        </item>
+      </select1>
+      <input ref="/data/pregnancy_status/chw_note_pregnant">
+        <label>Please fill out a pregnancy registration form for <output value=" /data/person_register/name "/> after submitting this household registration if they have started their ANC visits, and encourage mother to go to health facility for pregnancy confirmation if they have not started ANC clinic</label>
+      </input>
+    </group>
+    <group appearance="field-list" ref="/data/lmc_form">
+      <label></label>
+      <select1 ref="/data/lmc_form/is_last_cycle_known">
+        <label>Does <output value=" /data/person_register/name "/> know the start date of last cycle?</label>
+        <item>
+          <label>Yes</label>
+          <value>yes</value>
+        </item>
+        <item>
+          <label>No</label>
+          <value>no</value>
+        </item>
+      </select1>
+      <input ref="/data/lmc_form/start_date_cycle">
+        <label>Start date of the last cycle</label>
+      </input>
+      <select1 ref="/data/lmc_form/appro_date_lmc">
+        <label>Approximate date of last cycle</label>
+        <item>
+          <label>Up to 2 months</label>
+          <value>up_to_2</value>
+        </item>
+        <item>
+          <label>Up to 3 months</label>
+          <value>up_to_3</value>
+        </item>
+        <item>
+          <label>Up to 4 months</label>
+          <value>up_to_4</value>
+        </item>
+        <item>
+          <label>Between 5 to 6 months ago</label>
+          <value>btn_5_6</value>
+        </item>
+        <item>
+          <label>Between 7 to 8 months ago</label>
+          <value>Btn_7_8</value>
+        </item>
+      </select1>
+    </group>
+    <group ref="/data/delivery_form">
+      <label></label>
+      <select1 ref="/data/delivery_form/delivery_place">
+        <label>Place of delivery</label>
+        <hint>If baby's age is less than 6 weeks</hint>
+        <item>
+          <label>Facility</label>
+          <value>facility</value>
+        </item>
+        <item>
+          <label>Home</label>
+          <value>home</value>
+        </item>
+        <item>
+          <label>On the way to the health facility</label>
+          <value>on_way_to_HF</value>
+        </item>
+        <item>
+          <label>Other</label>
+          <value>other</value>
+        </item>
+      </select1>
+      <input ref="/data/delivery_form/birth_weight">
+        <label>Birth Weight</label>
+      </input>
+    </group>
+    <group ref="/data/relationship_to_head">
+      <label></label>
+      <select1 ref="/data/relationship_to_head/relationship_type">
+        <label>Relationship to Household Head</label>
+        <item>
+          <label>Self</label>
+          <value>self</value>
+        </item>
+        <item>
+          <label>Spouse</label>
+          <value>spouse</value>
+        </item>
+        <item>
+          <label>Child</label>
+          <value>child</value>
+        </item>
+        <item>
+          <label>Other (specify)</label>
+          <value>other</value>
+        </item>
+      </select1>
+      <input ref="/data/relationship_to_head/relationship_other">
+        <label>Relationship to Household Head</label>
+      </input>
+    </group>
+    <group appearance="field-list summary" ref="/data/group_review">
+      <label>Summary page</label>
+      <input ref="/data/group_review/submit">
+        <label>&lt;h4 style="text-align:center;"&gt;Be sure you Submit to complete this action.&lt;/h4&gt;</label>
+      </input>
+      <input appearance="h1 yellow" ref="/data/group_review/r_summary_details">
+        <label>Patient Details&lt;I class="fa fa-user"&gt;&lt;/i&gt;</label>
+      </input>
+      <input ref="/data/group_review/r_patient_details">
+        <label>&lt;h4 style="text-align:center;"&gt;name&lt;/h4&gt; 
+&lt;h5 style="text-align:center;"&gt;age years old&lt;/h5&gt;</label>
+      </input>
+      <input appearance="h1 green" ref="/data/group_review/r_followup">
+        <label>Follow Up&lt;i class="fa fa-flag"&gt;&lt;/i&gt;</label>
+      </input>
+      <input ref="/data/group_review/r_followup_note">
+        <label>The following tasks will appear when due:</label>
+      </input>
+    </group>
+  </h:body>
+</h:html>

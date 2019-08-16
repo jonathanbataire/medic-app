@@ -1,0 +1,8 @@
+{
+   "icon": "",
+   "context": {
+       "person": true,
+  		"place": false,
+  		"expression": "contact.type === 'person' && (!contact.sex || contact.sex === 'female') && user.parent.type === 'health_center'"
+   	}
+}

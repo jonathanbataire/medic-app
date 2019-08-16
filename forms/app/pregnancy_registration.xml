@@ -1,0 +1,679 @@
+<?xml version="1.0"?>
+<h:html xmlns="http://www.w3.org/2002/xforms" xmlns:ev="http://www.w3.org/2001/xml-events" xmlns:h="http://www.w3.org/1999/xhtml" xmlns:jr="http://openrosa.org/javarosa" xmlns:orx="http://openrosa.org/xforms" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <h:head>
+    <h:title>Pregnancy Registration</h:title>
+    <model>
+      <instance>
+        <pregnancy_registration delimiter="#" id="pregnancy_registration" prefix="J1!pregnancy_registration!" version="2019-08-16 11:14:49">
+          <inputs>
+            <meta>
+              <location>
+                <lat/>
+                <long/>
+                <error/>
+                <message/>
+              </location>
+            </meta>
+            <source>user</source>
+            <source_id/>
+            <contact>
+              <_id/>
+              <name/>
+              <patient_id/>
+              <date_of_birth>0</date_of_birth>
+              <sex/>
+              <parent>
+                <parent>
+                  <contact>
+                    <chw_name/>
+                    <phone/>
+                  </contact>
+                </parent>
+              </parent>
+            </contact>
+          </inputs>
+          <source/>
+          <source_id/>
+          <patient_uuid/>
+          <patient_id/>
+          <patient_name/>
+          <patient_date_of_birth/>
+          <patient_age_in_years>0</patient_age_in_years>
+          <patient_age_in_months>0</patient_age_in_months>
+          <patient_age_in_days/>
+          <patient_age_in_weeks/>
+          <pregnancy_screening>
+            <date_of_LMC/>
+            <date_of_lmp/>
+            <app_LMP/>
+            <estimated_date_delivery/>
+          </pregnancy_screening>
+          <pregnancy_test_details>
+            <pregnancy_test/>
+            <test_results/>
+            <refer_mother_to_facility/>
+            <second_test_results/>
+            <second_estimated_date_delivery/>
+          </pregnancy_test_details>
+          <anc_screening>
+            <attended_anc_meeting/>
+            <date_of_lmc/>
+            <anc_meeting>
+              <number_anc_visits/>
+              <date_last_anc/>
+            </anc_meeting>
+            <date_next_visit/>
+            <weeks_of_lmc/>
+            <malaria_prophylaxis>
+              <prophylaxis/>
+              <last_dose/>
+              <date_last_dose/>
+              <ensure_mother_dose/>
+            </malaria_prophylaxis>
+            <treated_nets_group>
+              <use_LLIN/>
+              <CHW_msg_LLIN/>
+              <observe_house/>
+              <help_mother/>
+            </treated_nets_group>
+            <tentanus_immunization>
+              <tt_immunization/>
+              <tt_dose_received/>
+              <date_last_tt_dose/>
+              <CHW_msg_tt/>
+            </tentanus_immunization>
+            <nutrition>
+              <CHW_msg_assess/>
+              <muac_score/>
+              <CHW_msg_malnutrition/>
+              <malnutrition_msg_two/>
+              <malnutrition_msg_three/>
+              <mother_diet/>
+              <diet_msg/>
+              <weight/>
+              <weight_msg/>
+              <number_of_pregnancies/>
+              <pregnancies_after_seven/>
+              <mother_risk_factors/>
+              <CHW_msg_factors/>
+            </nutrition>
+            <danger_signs_group>
+              <danger_signs/>
+              <CHW_msg_danger/>
+            </danger_signs_group>
+            <date_of_delivery/>
+          </anc_screening>
+          <group_review>
+            <submit/>
+            <r_summary_details/>
+            <r_patient_details/>
+            <r_followup/>
+            <r_followup_note/>
+          </group_review>
+          <meta tag="hidden">
+            <instanceID/>
+          </meta>
+        </pregnancy_registration>
+      </instance>
+      <instance id="contact-summary"/>
+      <bind nodeset="/pregnancy_registration/inputs" relevant="./source = 'user'"/>
+      <bind nodeset="/pregnancy_registration/inputs/source" type="string"/>
+      <bind nodeset="/pregnancy_registration/inputs/source_id" type="string"/>
+      <bind nodeset="/pregnancy_registration/inputs/contact/_id" type="db:person"/>
+      <bind nodeset="/pregnancy_registration/inputs/contact/name" type="string"/>
+      <bind nodeset="/pregnancy_registration/inputs/contact/patient_id" type="string"/>
+      <bind nodeset="/pregnancy_registration/inputs/contact/date_of_birth" type="string"/>
+      <bind nodeset="/pregnancy_registration/inputs/contact/sex" type="string"/>
+      <bind nodeset="/pregnancy_registration/inputs/contact/parent/parent/contact/chw_name" type="string"/>
+      <bind nodeset="/pregnancy_registration/inputs/contact/parent/parent/contact/phone" type="string"/>
+      <bind calculate="../inputs/source" nodeset="/pregnancy_registration/source" type="string"/>
+      <bind calculate="../inputs/source_id" nodeset="/pregnancy_registration/source_id" type="string"/>
+      <bind calculate="../inputs/contact/_id" nodeset="/pregnancy_registration/patient_uuid" type="string"/>
+      <bind calculate="../inputs/contact/_id" nodeset="/pregnancy_registration/patient_id" required="true()" type="string"/>
+      <bind calculate="../inputs/contact/name" nodeset="/pregnancy_registration/patient_name" type="string"/>
+      <bind calculate="../inputs/contact/date_of_birth" nodeset="/pregnancy_registration/patient_date_of_birth" type="string"/>
+      <bind calculate="floor( difference-in-months(  /pregnancy_registration/inputs/contact/date_of_birth , today() ) div 12 )" nodeset="/pregnancy_registration/patient_age_in_years" type="string"/>
+      <bind calculate="difference-in-months(  /pregnancy_registration/inputs/contact/date_of_birth , today() )" nodeset="/pregnancy_registration/patient_age_in_months" type="string"/>
+      <bind calculate="floor( decimal-date-time(today()) - decimal-date-time( /pregnancy_registration/inputs/contact/date_of_birth ) )" nodeset="/pregnancy_registration/patient_age_in_days" type="string"/>
+      <bind calculate="floor((decimal-date-time(today()) - decimal-date-time( /pregnancy_registration/inputs/contact/date_of_birth )) div 7)" nodeset="/pregnancy_registration/patient_age_in_weeks" type="string"/>
+      <bind nodeset="/pregnancy_registration/pregnancy_screening/date_of_LMC" required="true()" type="select1"/>
+      <bind constraint=". &lt;=today()" jr:constraintMsg="Can't be a future date" nodeset="/pregnancy_registration/pregnancy_screening/date_of_lmp" relevant=" /pregnancy_registration/pregnancy_screening/date_of_LMC ='yes'" required="true()" type="date"/>
+      <bind nodeset="/pregnancy_registration/pregnancy_screening/app_LMP" relevant=" /pregnancy_registration/pregnancy_screening/date_of_LMC ='no'" required="true()" type="select1"/>
+      <bind nodeset="/pregnancy_registration/pregnancy_screening/estimated_date_delivery" relevant=" /pregnancy_registration/pregnancy_screening/app_LMP  = 'up_to_4' or  /pregnancy_registration/pregnancy_screening/app_LMP ='btn_5_n_6' or  /pregnancy_registration/pregnancy_screening/app_LMP ='btn_7_n_8'" required="true()" type="date"/>
+      <bind nodeset="/pregnancy_registration/pregnancy_test_details/pregnancy_test" relevant=" /pregnancy_registration/pregnancy_screening/app_LMP  = 'up_to_2' or  /pregnancy_registration/pregnancy_screening/app_LMP ='up_to_3'" required="true()" type="select1"/>
+      <bind nodeset="/pregnancy_registration/pregnancy_test_details/test_results" relevant=" /pregnancy_registration/pregnancy_test_details/pregnancy_test ='yes'" required="true()" type="select1"/>
+      <bind nodeset="/pregnancy_registration/pregnancy_test_details/refer_mother_to_facility" readonly="true()" relevant=" /pregnancy_registration/pregnancy_test_details/pregnancy_test ='no'" type="string"/>
+      <bind nodeset="/pregnancy_registration/pregnancy_test_details/second_test_results" relevant=" /pregnancy_registration/pregnancy_test_details/test_results ='negative'" required="true()" type="select1"/>
+      <bind nodeset="/pregnancy_registration/pregnancy_test_details/second_estimated_date_delivery" relevant=" /pregnancy_registration/pregnancy_test_details/test_results ='positive' or  /pregnancy_registration/pregnancy_test_details/second_test_results ='positive'" required="true()" type="date"/>
+      <bind nodeset="/pregnancy_registration/anc_screening" relevant=" /pregnancy_registration/pregnancy_test_details/test_results ='positive' or  /pregnancy_registration/pregnancy_test_details/second_test_results ='positive' or  /pregnancy_registration/pregnancy_screening/date_of_LMC ='yes'"/>
+      <bind nodeset="/pregnancy_registration/anc_screening/attended_anc_meeting" required="true()" type="select1"/>
+      <bind nodeset="/pregnancy_registration/anc_screening/date_of_lmc" relevant=" /pregnancy_registration/anc_screening/attended_anc_meeting ='no'" required="true()" type="date"/>
+      <bind nodeset="/pregnancy_registration/anc_screening/anc_meeting" relevant=" /pregnancy_registration/anc_screening/attended_anc_meeting ='yes'"/>
+      <bind nodeset="/pregnancy_registration/anc_screening/anc_meeting/number_anc_visits" required="true()" type="select"/>
+      <bind nodeset="/pregnancy_registration/anc_screening/anc_meeting/date_last_anc" required="true()" type="date"/>
+      <bind nodeset="/pregnancy_registration/anc_screening/date_next_visit" required="true()" type="date"/>
+      <bind calculate="floor( decimal-date-time(today()) - decimal-date-time( /pregnancy_registration/anc_screening/date_of_lmc )) div 7" nodeset="/pregnancy_registration/anc_screening/weeks_of_lmc" type="string"/>
+      <bind nodeset="/pregnancy_registration/anc_screening/malaria_prophylaxis" relevant=" /pregnancy_registration/anc_screening/weeks_of_lmc  &gt; 14"/>
+      <bind nodeset="/pregnancy_registration/anc_screening/malaria_prophylaxis/prophylaxis" required="true()" type="select1"/>
+      <bind nodeset="/pregnancy_registration/anc_screening/malaria_prophylaxis/last_dose" required="true()" type="select1"/>
+      <bind nodeset="/pregnancy_registration/anc_screening/malaria_prophylaxis/date_last_dose" required="true()" type="date"/>
+      <bind nodeset="/pregnancy_registration/anc_screening/malaria_prophylaxis/ensure_mother_dose" readonly="true()" type="string"/>
+      <bind nodeset="/pregnancy_registration/anc_screening/treated_nets_group/use_LLIN" required="true()" type="select1"/>
+      <bind nodeset="/pregnancy_registration/anc_screening/treated_nets_group/CHW_msg_LLIN" readonly="true()" relevant=" /pregnancy_registration/anc_screening/treated_nets_group/use_LLIN ='yes'" type="string"/>
+      <bind nodeset="/pregnancy_registration/anc_screening/treated_nets_group/observe_house" readonly="true()" type="string"/>
+      <bind nodeset="/pregnancy_registration/anc_screening/treated_nets_group/help_mother" readonly="true()" relevant=" /pregnancy_registration/anc_screening/treated_nets_group/use_LLIN ='no'" type="string"/>
+      <bind nodeset="/pregnancy_registration/anc_screening/tentanus_immunization/tt_immunization" required="true()" type="select1"/>
+      <bind nodeset="/pregnancy_registration/anc_screening/tentanus_immunization/tt_dose_received" relevant=" /pregnancy_registration/anc_screening/tentanus_immunization/tt_immunization ='yes'" required="true()" type="select"/>
+      <bind nodeset="/pregnancy_registration/anc_screening/tentanus_immunization/date_last_tt_dose" relevant=" /pregnancy_registration/anc_screening/tentanus_immunization/tt_immunization ='yes'" required="true()" type="date"/>
+      <bind nodeset="/pregnancy_registration/anc_screening/tentanus_immunization/CHW_msg_tt" readonly="true()" relevant=" /pregnancy_registration/anc_screening/tentanus_immunization/tt_immunization ='no'" type="string"/>
+      <bind nodeset="/pregnancy_registration/anc_screening/nutrition/CHW_msg_assess" readonly="true()" type="string"/>
+      <bind nodeset="/pregnancy_registration/anc_screening/nutrition/muac_score" required="true()" type="int"/>
+      <bind nodeset="/pregnancy_registration/anc_screening/nutrition/CHW_msg_malnutrition" readonly="true()" relevant=" /pregnancy_registration/anc_screening/nutrition/muac_score &gt;=22" type="string"/>
+      <bind nodeset="/pregnancy_registration/anc_screening/nutrition/malnutrition_msg_two" readonly="true()" relevant=" /pregnancy_registration/anc_screening/nutrition/muac_score &gt;=19 and  /pregnancy_registration/anc_screening/nutrition/muac_score &lt;=21.9" type="string"/>
+      <bind nodeset="/pregnancy_registration/anc_screening/nutrition/malnutrition_msg_three" readonly="true()" relevant=" /pregnancy_registration/anc_screening/nutrition/muac_score &lt;19" type="string"/>
+      <bind nodeset="/pregnancy_registration/anc_screening/nutrition/mother_diet" required="true()" type="select"/>
+      <bind nodeset="/pregnancy_registration/anc_screening/nutrition/diet_msg" readonly="true()" type="string"/>
+      <bind nodeset="/pregnancy_registration/anc_screening/nutrition/weight" required="true()" type="int"/>
+      <bind nodeset="/pregnancy_registration/anc_screening/nutrition/weight_msg" readonly="true()" relevant=" /pregnancy_registration/anc_screening/nutrition/weight = null" type="string"/>
+      <bind nodeset="/pregnancy_registration/anc_screening/nutrition/number_of_pregnancies" required="true()" type="select1"/>
+      <bind nodeset="/pregnancy_registration/anc_screening/nutrition/pregnancies_after_seven" required="true()" type="select1"/>
+      <bind nodeset="/pregnancy_registration/anc_screening/nutrition/mother_risk_factors" required="true()" type="select"/>
+      <bind nodeset="/pregnancy_registration/anc_screening/nutrition/CHW_msg_factors" readonly="true()" type="string"/>
+      <bind nodeset="/pregnancy_registration/anc_screening/danger_signs_group/danger_signs" required="true()" type="select"/>
+      <bind nodeset="/pregnancy_registration/anc_screening/danger_signs_group/CHW_msg_danger" readonly="true()" type="string"/>
+      <bind calculate="if( /pregnancy_registration/pregnancy_screening/estimated_date_delivery  != null, /pregnancy_registration/pregnancy_screening/estimated_date_delivery , /pregnancy_registration/pregnancy_test_details/second_estimated_date_delivery )" nodeset="/pregnancy_registration/anc_screening/date_of_delivery" type="string"/>
+      <bind nodeset="/pregnancy_registration/group_review/submit" readonly="true()" type="string"/>
+      <bind nodeset="/pregnancy_registration/group_review/r_summary_details" readonly="true()" type="string"/>
+      <bind nodeset="/pregnancy_registration/group_review/r_patient_details" readonly="true()" type="string"/>
+      <bind nodeset="/pregnancy_registration/group_review/r_followup" readonly="true()" type="string"/>
+      <bind nodeset="/pregnancy_registration/group_review/r_followup_note" readonly="true()" type="string"/>
+      <bind calculate="concat('uuid:', uuid())" nodeset="/pregnancy_registration/meta/instanceID" readonly="true()" type="string"/>
+    </model>
+  </h:head>
+  <h:body class="pages">
+    <group appearance="field-list" ref="/pregnancy_registration/inputs">
+      <label>Patient</label>
+      <group ref="/pregnancy_registration/inputs/contact">
+        <label>Contact</label>
+        <input appearance="db-object" ref="/pregnancy_registration/inputs/contact/_id">
+          <label>What is the patient's name?</label>
+        </input>
+        <group ref="/pregnancy_registration/inputs/contact/parent">
+          <label>Parent</label>
+          <group ref="/pregnancy_registration/inputs/contact/parent/parent">
+            <label>Parent</label>
+            <group ref="/pregnancy_registration/inputs/contact/parent/parent/contact">
+              <label>Contact</label>
+            </group>
+          </group>
+        </group>
+      </group>
+    </group>
+    <group appearance="field-list" ref="/pregnancy_registration/pregnancy_screening">
+      <label>Pregnancy Screening</label>
+      <select1 ref="/pregnancy_registration/pregnancy_screening/date_of_LMC">
+        <label>Does the mother know the date of the last menstrual cycle?</label>
+        <item>
+          <label>Yes</label>
+          <value>yes</value>
+        </item>
+        <item>
+          <label>No</label>
+          <value>no</value>
+        </item>
+      </select1>
+      <input ref="/pregnancy_registration/pregnancy_screening/date_of_lmp">
+        <label>Start date of last menstrual cycle</label>
+      </input>
+      <select1 ref="/pregnancy_registration/pregnancy_screening/app_LMP">
+        <label>Approximate date of last menstrual cycle</label>
+        <item>
+          <label>Up to 2 months</label>
+          <value>up_to_2</value>
+        </item>
+        <item>
+          <label>Up to 3 months</label>
+          <value>up_to_3</value>
+        </item>
+        <item>
+          <label>Up to 4 months</label>
+          <value>up_to_4</value>
+        </item>
+        <item>
+          <label>Between 5 to 6 months ago</label>
+          <value>btn_5_n_6</value>
+        </item>
+        <item>
+          <label>Between 7 to 8 months ago</label>
+          <value>btn_7_n_8</value>
+        </item>
+      </select1>
+      <input ref="/pregnancy_registration/pregnancy_screening/estimated_date_delivery">
+        <label>Estimated Date of Delivery is:</label>
+        <hint>Calculate EDD based on date of last menstrual cycle, Trigger the PNC visit schedule based on EDD</hint>
+      </input>
+    </group>
+    <group appearance="field-list" ref="/pregnancy_registration/pregnancy_test_details">
+      <label></label>
+      <select1 ref="/pregnancy_registration/pregnancy_test_details/pregnancy_test">
+        <label>Have you had a pregnacy test done?</label>
+        <item>
+          <label>Yes</label>
+          <value>yes</value>
+        </item>
+        <item>
+          <label>No</label>
+          <value>no</value>
+        </item>
+      </select1>
+      <select1 ref="/pregnancy_registration/pregnancy_test_details/test_results">
+        <label>What were the results of the test?</label>
+        <item>
+          <label>Positive</label>
+          <value>positive</value>
+        </item>
+        <item>
+          <label>Negative</label>
+          <value>negative</value>
+        </item>
+      </select1>
+      <input ref="/pregnancy_registration/pregnancy_test_details/refer_mother_to_facility">
+        <label>Refer mother to a health facililty</label>
+      </input>
+      <select1 ref="/pregnancy_registration/pregnancy_test_details/second_test_results">
+        <label>What are the results of the test?</label>
+        <hint>Registration and advice Client to visit health facility for further check up</hint>
+        <item>
+          <label>Positive</label>
+          <value>positive</value>
+        </item>
+        <item>
+          <label>Negative</label>
+          <value>negative</value>
+        </item>
+      </select1>
+      <input ref="/pregnancy_registration/pregnancy_test_details/second_estimated_date_delivery">
+        <label>Estimated Date of Delivery is:</label>
+        <hint>Calculate EDD based on date of last menstrual cycle, Trigger the PNC visit schedule based on EDD</hint>
+      </input>
+    </group>
+    <group appearance="field-list" ref="/pregnancy_registration/anc_screening">
+      <label>ANC VISIT SCREENING</label>
+      <select1 ref="/pregnancy_registration/anc_screening/attended_anc_meeting">
+        <label>Has <output value=" /pregnancy_registration/inputs/contact/name "/> attended ANC visit during this pregnancy?</label>
+        <hint>Check her ANC card to see if she has started ANC visit</hint>
+        <item>
+          <label>Yes</label>
+          <value>yes</value>
+        </item>
+        <item>
+          <label>No</label>
+          <value>no</value>
+        </item>
+      </select1>
+      <input ref="/pregnancy_registration/anc_screening/date_of_lmc">
+        <label>When was the start date of her last menstrual cycle?</label>
+      </input>
+      <group ref="/pregnancy_registration/anc_screening/anc_meeting">
+        <label></label>
+        <select ref="/pregnancy_registration/anc_screening/anc_meeting/number_anc_visits">
+          <label>What is the total number of ANC visits attended by <output value=" /pregnancy_registration/inputs/contact/name "/> so far?</label>
+          <item>
+            <label>One</label>
+            <value>one</value>
+          </item>
+          <item>
+            <label>Two</label>
+            <value>two</value>
+          </item>
+          <item>
+            <label>Three</label>
+            <value>three</value>
+          </item>
+          <item>
+            <label>Four</label>
+            <value>four</value>
+          </item>
+          <item>
+            <label>Five</label>
+            <value>five</value>
+          </item>
+          <item>
+            <label>Six</label>
+            <value>six</value>
+          </item>
+          <item>
+            <label>Seven</label>
+            <value>seven</value>
+          </item>
+          <item>
+            <label>Eight</label>
+            <value>eight</value>
+          </item>
+          <item>
+            <label>More than Eight</label>
+            <value>more_than_eight</value>
+          </item>
+        </select>
+        <input ref="/pregnancy_registration/anc_screening/anc_meeting/date_last_anc">
+          <label>Enter the date of their last ANC visit</label>
+          <hint>dd/mm/yy</hint>
+        </input>
+      </group>
+      <input ref="/pregnancy_registration/anc_screening/date_next_visit">
+        <label>When is her next ANC visit</label>
+        <hint>dd/mm/yy</hint>
+      </input>
+      <group appearance="field-list" ref="/pregnancy_registration/anc_screening/malaria_prophylaxis">
+        <label>Malaria Prophylaxis</label>
+        <select1 ref="/pregnancy_registration/anc_screening/malaria_prophylaxis/prophylaxis">
+          <label>Has the expectant mother taken malaria prophylaxis?</label>
+          <hint>Confirm Malaria doses by checking the mother's ANC card</hint>
+          <item>
+            <label>Yes</label>
+            <value>yes</value>
+          </item>
+          <item>
+            <label>No</label>
+            <value>no</value>
+          </item>
+        </select1>
+        <select1 ref="/pregnancy_registration/anc_screening/malaria_prophylaxis/last_dose">
+          <label>What was her last dose?</label>
+          <item>
+            <label>1st IPT</label>
+            <value>ipt_one</value>
+          </item>
+          <item>
+            <label>2nd IPT</label>
+            <value>ipt_two</value>
+          </item>
+          <item>
+            <label>3rd IPT</label>
+            <value>ipt_three</value>
+          </item>
+          <item>
+            <label>4th IPT</label>
+            <value>ipt_four</value>
+          </item>
+          <item>
+            <label>More than 4th IPT</label>
+            <value>more_ipt</value>
+          </item>
+        </select1>
+        <input ref="/pregnancy_registration/anc_screening/malaria_prophylaxis/date_last_dose">
+          <label>Date of last dose administered</label>
+        </input>
+        <input ref="/pregnancy_registration/anc_screening/malaria_prophylaxis/ensure_mother_dose">
+          <label>Ensure the mother takes malaria prophylaxis as recommended by the nurses for the sake of her health and of her baby</label>
+        </input>
+      </group>
+      <group ref="/pregnancy_registration/anc_screening/treated_nets_group">
+        <label>Long Lasting Insectcide-treated Nets(LLITN) usage</label>
+        <select1 ref="/pregnancy_registration/anc_screening/treated_nets_group/use_LLIN">
+          <label>Does the mother use LLIN (Long Lasting Insectcide-treated Net)?</label>
+          <item>
+            <label>Yes</label>
+            <value>yes</value>
+          </item>
+          <item>
+            <label>No</label>
+            <value>no</value>
+          </item>
+        </select1>
+        <input ref="/pregnancy_registration/anc_screening/treated_nets_group/CHW_msg_LLIN">
+          <label>Encourage her to continue sleep under a Long-Lasting Insectcide-treated Net (LLIN) to prevent malaria. It is smart for you and safe for your baby.</label>
+        </input>
+        <input ref="/pregnancy_registration/anc_screening/treated_nets_group/observe_house">
+          <label>&lt;b&gt;Observe if there is a net hanged correctly in the house. If not, show the mother how to correctly hang it.&lt;/b&gt;</label>
+        </input>
+        <input ref="/pregnancy_registration/anc_screening/treated_nets_group/help_mother">
+          <label>Help <output value=" /pregnancy_registration/inputs/contact/name "/> to get a LLIN and encorage her to sleep under it to prevent Malaria</label>
+        </input>
+      </group>
+      <group ref="/pregnancy_registration/anc_screening/tentanus_immunization">
+        <label>Tetanus Immunization</label>
+        <select1 ref="/pregnancy_registration/anc_screening/tentanus_immunization/tt_immunization">
+          <label>Has <output value=" /pregnancy_registration/inputs/contact/name "/> received any TT Immunization?</label>
+          <hint>Confirm TT doses by checking the mother's ANC card</hint>
+          <item>
+            <label>Yes</label>
+            <value>yes</value>
+          </item>
+          <item>
+            <label>No</label>
+            <value>no</value>
+          </item>
+        </select1>
+        <select ref="/pregnancy_registration/anc_screening/tentanus_immunization/tt_dose_received">
+          <label>Which doses has she received? Select all she has received</label>
+          <item>
+            <label>TT 1</label>
+            <value>tt1</value>
+          </item>
+          <item>
+            <label>TT 2</label>
+            <value>tt2</value>
+          </item>
+          <item>
+            <label>TT 3</label>
+            <value>tt3</value>
+          </item>
+          <item>
+            <label>TT 4</label>
+            <value>tt4</value>
+          </item>
+          <item>
+            <label>TT 5</label>
+            <value>tt5</value>
+          </item>
+        </select>
+        <input ref="/pregnancy_registration/anc_screening/tentanus_immunization/date_last_tt_dose">
+          <label>Date of last dose administered</label>
+        </input>
+        <input ref="/pregnancy_registration/anc_screening/tentanus_immunization/CHW_msg_tt">
+          <label>Advice the mother to ensure she has received all the recommended doses of TT</label>
+        </input>
+      </group>
+      <group ref="/pregnancy_registration/anc_screening/nutrition">
+        <label>Nutrition</label>
+        <input ref="/pregnancy_registration/anc_screening/nutrition/CHW_msg_assess">
+          <label>Assess expectant mother for malnutrition using Mid Upper Arm Circumference (MUAC) assessment</label>
+        </input>
+        <input ref="/pregnancy_registration/anc_screening/nutrition/muac_score">
+          <label>What is the mother's MUAC score? (in cm)</label>
+        </input>
+        <input ref="/pregnancy_registration/anc_screening/nutrition/CHW_msg_malnutrition">
+          <label>Expectant mother is not showing signs of Malnutrition</label>
+        </input>
+        <input ref="/pregnancy_registration/anc_screening/nutrition/malnutrition_msg_two">
+          <label>Expectant mother has Moderate Malnutrition: Please refer her to the health facility</label>
+        </input>
+        <input ref="/pregnancy_registration/anc_screening/nutrition/malnutrition_msg_three">
+          <label>Expectant mother has Severe Malnutrition: Please refer her to the health facility</label>
+        </input>
+        <select ref="/pregnancy_registration/anc_screening/nutrition/mother_diet">
+          <label>What did she eat in the last 24 hours? (tick all that apply as mentioned by client)</label>
+          <item>
+            <label>Milk (powdered milk,fresh milk)</label>
+            <value>milk</value>
+          </item>
+          <item>
+            <label>Eggs</label>
+            <value>eggs</value>
+          </item>
+          <item>
+            <label>Meat (beef,goat, lamb,chicken,duck) or Fish</label>
+            <value>meat</value>
+          </item>
+          <item>
+            <label>Legumes (beans,peas,lentils)</label>
+            <value>legumes</value>
+          </item>
+          <item>
+            <label>Vegetables (lettuce,cabbage,cauliflower,brocolli,dark green vegtables,green peas)</label>
+            <value>vegetables</value>
+          </item>
+          <item>
+            <label>Carbohydrates (bread,wheat,corn,green bananas,millet,sorghum,oats,rice,sweet potatoes,cassava and arrow roots)</label>
+            <value>carbohydrates</value>
+          </item>
+          <item>
+            <label>Fruits</label>
+            <value>fruits</value>
+          </item>
+          <item>
+            <label>2L of water</label>
+            <value>water</value>
+          </item>
+          <item>
+            <label>None of the above</label>
+            <value>none</value>
+          </item>
+        </select>
+        <input ref="/pregnancy_registration/anc_screening/nutrition/diet_msg">
+          <label>&lt;b&gt;Diet messages for the client: Pregnant women need to eat more food than usual to have a healthy baby. Be sure to eat a balanced diet with more of liver, fruits and dark leafy vegetables.&lt;/b&gt;</label>
+        </input>
+        <input ref="/pregnancy_registration/anc_screening/nutrition/weight">
+          <label>What is the weight of the mother in kgs?</label>
+          <hint>Check the ANC booklet, or the last weight the mother confirmed, or weigh her if you have a scale</hint>
+        </input>
+        <input ref="/pregnancy_registration/anc_screening/nutrition/weight_msg">
+          <label>Its important to find the weight of the mother as it helps you know whether the mother is feeding well</label>
+        </input>
+        <select1 ref="/pregnancy_registration/anc_screening/nutrition/number_of_pregnancies">
+          <label>How many pregnancies has the mother ever carried, including this one? (gravida)</label>
+          <item>
+            <label>One</label>
+            <value>one</value>
+          </item>
+          <item>
+            <label>Two</label>
+            <value>two</value>
+          </item>
+          <item>
+            <label>Three</label>
+            <value>three</value>
+          </item>
+          <item>
+            <label>Four or more</label>
+            <value>four</value>
+          </item>
+        </select1>
+        <select1 ref="/pregnancy_registration/anc_screening/nutrition/pregnancies_after_seven">
+          <label>How many pregnacies has the mother carried beyond 7 months? (parity)</label>
+          <item>
+            <label>One</label>
+            <value>one</value>
+          </item>
+          <item>
+            <label>Two</label>
+            <value>two</value>
+          </item>
+          <item>
+            <label>Three</label>
+            <value>three</value>
+          </item>
+          <item>
+            <label>Four or more</label>
+            <value>four</value>
+          </item>
+          <item>
+            <label>None</label>
+            <value>none</value>
+          </item>
+        </select1>
+        <select ref="/pregnancy_registration/anc_screening/nutrition/mother_risk_factors">
+          <label>Does the mother have any of these risk factors?</label>
+          <item>
+            <label>Birth spacing is less than 2 years</label>
+            <value>birth</value>
+          </item>
+          <item>
+            <label>Had previous miscarriages or previous difficulties in childbirth</label>
+            <value>had_previous</value>
+          </item>
+          <item>
+            <label>Heart conditions,asthma,high blood pressure, known diabetes</label>
+            <value>heart</value>
+          </item>
+          <item>
+            <label>Others</label>
+            <value>others</value>
+          </item>
+          <item>
+            <label>Not experienced any risk factor</label>
+            <value>not</value>
+          </item>
+        </select>
+        <input ref="/pregnancy_registration/anc_screening/nutrition/CHW_msg_factors">
+          <label>Visit this mother more often to assess for any risk factors</label>
+        </input>
+      </group>
+      <group ref="/pregnancy_registration/anc_screening/danger_signs_group">
+        <label>DANGER SIGNS</label>
+        <select ref="/pregnancy_registration/anc_screening/danger_signs_group/danger_signs">
+          <label>Is the mother currently experiencing any of these danger signs?</label>
+          <item>
+            <label>Pain or cramping in the abdomen</label>
+            <value>pain</value>
+          </item>
+          <item>
+            <label>Bleeding or fluid leaking from vigina or viginal discharge with bad odour</label>
+            <value>bleeding</value>
+          </item>
+          <item>
+            <label>Severe nausea or vomiting</label>
+            <value>severe</value>
+          </item>
+          <item>
+            <label>Fever of 38 degrees or higher</label>
+            <value>fever</value>
+          </item>
+          <item>
+            <label>Severe headache or new blurry vision</label>
+            <value>severe_headache</value>
+          </item>
+          <item>
+            <label>Sudden weight gain or severe swelling of feet,ankles, face or hands</label>
+            <value>sudden</value>
+          </item>
+          <item>
+            <label>Less movement and kicking from the baby from 20wks</label>
+            <value>less</value>
+          </item>
+          <item>
+            <label>Blood in the urine or painful, burning urination</label>
+            <value>blood</value>
+          </item>
+          <item>
+            <label>Not experiencing any danger sign</label>
+            <value>not</value>
+          </item>
+        </select>
+        <input ref="/pregnancy_registration/anc_screening/danger_signs_group/CHW_msg_danger">
+          <label>&lt;b&gt;THE MOTHER SHOULD GO TO THE FACILITY IMMEDIATELY IF SHE IS EXPERIENCING ANY OF THESE DANGER SIGNS&lt;/b&gt;</label>
+        </input>
+      </group>
+    </group>
+    <group appearance="field-list summary" ref="/pregnancy_registration/group_review">
+      <label>Summary page</label>
+      <input ref="/pregnancy_registration/group_review/submit">
+        <label>&lt;h4 style="text-align:center;"&gt;Be sure you Submit to complete this action.&lt;/h4&gt;</label>
+      </input>
+      <input appearance="h1 yellow" ref="/pregnancy_registration/group_review/r_summary_details">
+        <label>Patient Details&lt;I class="fa fa-user"&gt;&lt;/i&gt;</label>
+      </input>
+      <input ref="/pregnancy_registration/group_review/r_patient_details">
+        <label>&lt;h4 style=&quot;text-align:center;&quot;&gt;<output value=" /pregnancy_registration/patient_name "/>&lt;/h4&gt; 
+&lt;h5 style=&quot;text-align:center;&quot;&gt;<output value=" /pregnancy_registration/patient_age_in_years "/> years old&lt;/h5&gt; &lt;h5 style=&quot;text-align:center;&quot;&gt;Estimated Date of Delivery: <output value=" /pregnancy_registration/anc_screening/date_of_delivery "/>&lt;/h5&gt; &lt;h5 style=&quot;text-align:center;&quot;&gt;Date of next ANC visit: <output value=" /pregnancy_registration/anc_screening/date_next_visit "/>&lt;/h5&gt;</label>
+      </input>
+      <input appearance="h1 green" ref="/pregnancy_registration/group_review/r_followup">
+        <label>Follow Up&lt;i class="fa fa-flag"&gt;&lt;/i&gt;</label>
+      </input>
+      <input ref="/pregnancy_registration/group_review/r_followup_note">
+        <label>The following tasks will appear when due:</label>
+      </input>
+    </group>
+  </h:body>
+</h:html>
