@@ -20,13 +20,13 @@ var targets = [
         type: 'percent',
         date: 'now',
         icon: 'pregnant',
-        goal: -1,
+        goal: 40,
         translation_key: 'targets.percentage.pregnancies.title',
         subtitle_translation_key: 'targets.percentage.pregnancies.subtitle',
         appliesTo: 'contacts',
         appliesToType: ['person','clinic'],
         appliesIf: function(c){
-           return c.contact.sex === "female";
+           return c.contact.sex === "female" && (c.contact.pregnant_at_registration ==="true" || c.contact.pregnant_at_registration==="false");
         },
        passesIf: function(c){
         return c.contact.pregnant_at_registration === "true";
@@ -38,16 +38,13 @@ var targets = [
         type: 'count',
         date: 'now',
         icon: 'people-children',
-        goal:200,
+        goal:4,
         translation_key: 'targets.people.title',
         subtitle_translation_key: 'targets.people.subtitle',
         appliesTo: 'contacts',
         appliesToType: ['person'],
         appliesIf: function(c){
-            return c.contact.type ==="person" &&
-            c.contact.parent &&
-            c.contact.parent.parent &&
-            c.contact.parent.parent.parent;
+            return c.contact.type ==="person" && c.contact.parent.parent.parent;
         }
     },
 ]

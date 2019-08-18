@@ -3,6 +3,6 @@
    "context": {
        "person": true,
   		"place": false,
-  		"expression": "contact.type === 'person' && (!contact.sex || contact.sex === 'female') && user.parent.type === 'health_center'"
+  		"expression": "ageInYears(contact)>=12 && ageInYears(contact)<=52 && contact.type === 'person' && contact.sex === 'female' && user.parent.type === 'health_center'"
    	}
 }

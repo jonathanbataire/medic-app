@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <h:html xmlns="http://www.w3.org/2002/xforms" xmlns:ev="http://www.w3.org/2001/xml-events" xmlns:h="http://www.w3.org/1999/xhtml" xmlns:jr="http://openrosa.org/javarosa" xmlns:orx="http://openrosa.org/xforms" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <h:head>
-    <h:title>Add Family</h:title>
+    <h:title>Family Registration</h:title>
     <model>
       <instance>
-        <data delimiter="#" id="contact:clinic:create" prefix="J1!contact:clinic:create!" version="2018-08-16  12-56">
+        <data delimiter="#" id="contact:clinic:create" prefix="J1!contact:clinic:create!" version="2019-08-16 19:27:01">
           <inputs>
             <meta>
               <location>
@@ -19,109 +19,90 @@
             </user>
           </inputs>
           <contact>
-            <name/>
             <debug_note/>
             <parent>PARENT</parent>
+            <name/>
+            <notes/>
             <sex/>
             <date_of_birth_method/>
             <date_of_birth/>
             <phone/>
+            <alternate_phone/>
             <pregnant_at_registration/>
-            <care_giver/>
-            <phone1/>
-          </contact>
-          <ephemeral_dob>
-            <g_sex/>
-            <contact_dob_method>approx</contact_dob_method>
-            <dob_calendar/>
             <age/>
+            <hh_name/>
+            <g_sex/>
+            <hh_notes/>
+            <dob_method/>
+            <dob_calendar/>
+            <age_years>0</age_years>
+            <approx_birth_year/>
+            <dob_approx/>
             <dob_raw/>
-            <contact_dob_iso/>
-          </ephemeral_dob>
-          <ephemeral_pregnancy>
-            <display_name/>
-            <pregnant/>
-            <note_p_form/>
-            <lmp/>
-            <lmp_start/>
-            <lmp_approx/>
-            <hh_fp_flow>
-              <hh_fp/>
-              <hh_family_planning_method/>
-              <hh_fp_enroll/>
-              <hh_fp_method_choice/>
-              <note_fp_1/>
-              <note_fp_2/>
-              <note_fp_3/>
-            </hh_fp_flow>
-            <g_children_under_5/>
-            <g_women_15_to_49/>
-            <note_msg/>
-          </ephemeral_pregnancy>
+            <dob_iso/>
+            <dob_debug/>
+            <Is_pregnant/>
+          </contact>
+          <ephemeral_phone>
+            <hh_has_phone/>
+            <tel_number>
+              <phone1/>
+              <phone2/>
+            </tel_number>
+          </ephemeral_phone>
+          <family_members_info>
+            <hh_fam_members/>
+            <number_fam_members/>
+            <msg_CHW/>
+          </family_members_info>
           <repeat>
-            <child_count/>
-            <child jr:template="">
+            <add_person_repeat jr:template="">
               <type>person</type>
               <parent>PARENT</parent>
               <name/>
               <date_of_birth/>
               <sex/>
-              <pregnant_at_registration/>
+              <contact/>
+              <date_of_birth_method/>
+              <phone/>
+              <alternate_phone/>
               <c_name/>
-              <family_member_type/>
-              <relation/>
-              <dob_method>approx</dob_method>
-              <dob_calendar_child/>
-              <dob_calendar_adult/>
-              <age_years_adult>0</age_years_adult>
-              <age_years_child>0</age_years_child>
-              <age_months_adult>0</age_months_adult>
-              <age_months_child>0</age_months_child>
-              <age_years/>
-              <age_months/>
-              <dob_calendar/>
+              <c_name_tel/>
+              <c_tel_number>
+                <c_phone1/>
+                <c_phone2/>
+              </c_tel_number>
+              <c_sex/>
+              <c_dob_method/>
+              <dob_calendar_person/>
+              <age_years_person/>
               <dob_raw/>
               <c_dob_iso/>
               <current_age>0</current_age>
-              <c_sex/>
-              <group_other_woman_pregnancy>
-                <married/>
-                <other-woman-pregnant/>
-                <o_lmp/>
-                <o_lmp_start/>
-                <o_lmp_approx/>
-                <p_test/>
-                <p_test_result/>
-                <p_test_kit/>
-                <p_test_kit_result/>
-                <note_p/>
-                <fp_flow>
-                  <fp/>
-                  <family_planning_method/>
-                  <fp_enroll/>
-                  <fp_method_choice/>
-                  <note_fp_1/>
-                  <note_fp_2/>
-                  <note_fp_3/>
-                </fp_flow>
-              </group_other_woman_pregnancy>
-            </child>
+              <person_pregnant/>
+              <CHW_msg_two/>
+              <lmc_group>
+                <c_name_lmc/>
+                <date_of_lmc/>
+                <approx_lmc/>
+                <CHW_msg_three/>
+              </lmc_group>
+              <relation_with_hh/>
+              <hh_relation_other/>
+              <primary_care_group>
+                <primary_care/>
+              </primary_care_group>
+            </add_person_repeat>
           </repeat>
+          <family_summary>
+            <r_details/>
+            <r_family_head/>
+          </family_summary>
           <clinic>
             <parent/>
             <name/>
             <geolocation/>
             <contact/>
-            <household_survey>
-              <safe_water/>
-              <source_clean_water/>
-              <source_of_drinking_water/>
-              <kitchen/>
-              <drying_rack/>
-              <rubbish_pit/>
-              <hygeinic_toilet/>
-              <mosquito_nets/>
-            </household_survey>
           </clinic>
           <meta tag="hidden">
             <instanceID/>
@@ -130,114 +111,93 @@
       </instance>
       <bind nodeset="/data/inputs" relevant="0"/>
       <bind nodeset="/data/inputs/user/facility_id" type="string"/>
-      <bind calculate=" /data/contact/care_giver " nodeset="/data/contact/name" required="true()" type="string"/>
       <bind nodeset="/data/contact/debug_note" readonly="true()" relevant="0" type="string"/>
       <bind nodeset="/data/contact/parent" type="string"/>
-      <bind calculate=" /data/ephemeral_dob/g_sex " nodeset="/data/contact/sex" type="string"/>
-      <bind calculate=" /data/ephemeral_dob/contact_dob_method " nodeset="/data/contact/date_of_birth_method" type="string"/>
-      <bind calculate=" /data/ephemeral_dob/contact_dob_iso " nodeset="/data/contact/date_of_birth" type="string"/>
-      <bind calculate=" /data/contact/phone1 " nodeset="/data/contact/phone" type="string"/>
-      <bind calculate=" /data/ephemeral_pregnancy/pregnant ='true' or  /data/repeat/child/group_other_woman_pregnancy/p_test_result ='pos' or  /data/repeat/child/group_other_woman_pregnancy/p_test_kit_result ='pos'" nodeset="/data/contact/pregnant_at_registration" type="string"/>
-      <bind nodeset="/data/contact/care_giver" required="true()" type="string"/>
-      <bind jr:constraintMsg="Use one of the following formats: +256 7XX XXX XXX or 07XX XXX XXX." nodeset="/data/contact/phone1" type="tel"/>
-      <bind nodeset="/data/ephemeral_dob/g_sex" required="true()" type="select1"/>
-      <bind nodeset="/data/ephemeral_dob/contact_dob_method" required="true()" type="select1"/>
-      <bind constraint=".&lt;today()" jr:constraintMsg="Date must be before today" nodeset="/data/ephemeral_dob/dob_calendar" relevant="selected(../contact_dob_method,'calendar')" required="true()" type="date"/>
-      <bind constraint=". &gt;= 12 and . &lt; 120" jr:constraintMsg="Age must be between 12 and 120" nodeset="/data/ephemeral_dob/age" relevant="selected(../contact_dob_method,'approx')" required="true()" type="int"/>
-      <bind calculate="if(selected( ../contact_dob_method,'calendar'), 
-../dob_calendar,
-format-date-time( decimal-date-time( today() ) - (365.25 * ../age) , &quot;%Y-%m-%d&quot;) )" nodeset="/data/ephemeral_dob/dob_raw" type="string"/>
-      <bind calculate="format-date-time(../dob_raw,&quot;%Y-%m-%d&quot;)" nodeset="/data/ephemeral_dob/contact_dob_iso" type="string"/>
-      <bind calculate=" /data/contact/care_giver " nodeset="/data/ephemeral_pregnancy/display_name" type="string"/>
-      <bind nodeset="/data/ephemeral_pregnancy/pregnant" relevant=" /data/ephemeral_dob/g_sex  = 'female'" required="true()" type="select1"/>
-      <bind nodeset="/data/ephemeral_pregnancy/note_p_form" readonly="true()" relevant="selected( /data/ephemeral_pregnancy/pregnant , 'true')" type="string"/>
-      <bind nodeset="/data/ephemeral_pregnancy/lmp" relevant="selected( /data/ephemeral_pregnancy/pregnant , 'false')" required="true()" type="select1"/>
-      <bind constraint=". &lt; today()" nodeset="/data/ephemeral_pregnancy/lmp_start" relevant="selected( /data/ephemeral_pregnancy/lmp , 'true')" type="date"/>
-      <bind nodeset="/data/ephemeral_pregnancy/lmp_approx" relevant="selected( /data/ephemeral_pregnancy/lmp , 'false')" required="true()" type="select1"/>
-      <bind nodeset="/data/ephemeral_pregnancy/hh_fp_flow" relevant="selected( /data/ephemeral_pregnancy/pregnant , 'false')"/>
-      <bind nodeset="/data/ephemeral_pregnancy/hh_fp_flow/hh_fp" required="true()" type="select1"/>
-      <bind constraint="not(selected(., 'fp_none') and count-selected(.)&gt;=2) and count-selected(.)&lt;=2 and not(count-selected(.)=2 and not(selected(., 'condoms') ))" jr:constraintMsg="None cannot be selected along with the other options. 
-Condoms are the only family planing method that can be combined with another family planning method" nodeset="/data/ephemeral_pregnancy/hh_fp_flow/hh_family_planning_method" relevant="selected( /data/ephemeral_pregnancy/hh_fp_flow/hh_fp , 'true')" required="true()" type="select"/>
-      <bind nodeset="/data/ephemeral_pregnancy/hh_fp_flow/hh_fp_enroll" relevant="selected( /data/ephemeral_pregnancy/hh_fp_flow/hh_fp , 'false') or selected( /data/ephemeral_pregnancy/hh_fp_flow/hh_family_planning_method , 'fp_none')" required="true()" type="select1"/>
-      <bind constraint="count-selected(.)&lt;=2 and not(count-selected(.)=2 and not(selected(., 'condoms') ))" jr:constraintMsg="Condoms are the only family planing method that can be combined with another family planning method" nodeset="/data/ephemeral_pregnancy/hh_fp_flow/hh_fp_method_choice" relevant="selected( /data/ephemeral_pregnancy/hh_fp_flow/hh_fp_enroll , 'true')" required="true()" type="select"/>
-      <bind nodeset="/data/ephemeral_pregnancy/hh_fp_flow/note_fp_1" readonly="true()" relevant="selected( /data/ephemeral_pregnancy/hh_fp_flow/hh_fp_enroll , 'true') and not(selected( /data/ephemeral_pregnancy/hh_fp_flow/hh_fp_method_choice , 'iud') or selected( /data/ephemeral_pregnancy/hh_fp_flow/hh_fp_method_choice , 'btl') or selected( /data/ephemeral_pregnancy/hh_fp_flow/hh_fp_method_choice , 'norplant'))" type="string"/>
-      <bind nodeset="/data/ephemeral_pregnancy/hh_fp_flow/note_fp_2" readonly="true()" relevant="selected( /data/ephemeral_pregnancy/hh_fp_flow/hh_fp_enroll , 'true') and (selected( /data/ephemeral_pregnancy/hh_fp_flow/hh_fp_method_choice , 'iud') or selected( /data/ephemeral_pregnancy/hh_fp_flow/hh_fp_method_choice , 'btl') or selected( /data/ephemeral_pregnancy/hh_fp_flow/hh_fp_method_choice , 'norplant'))" type="string"/>
-      <bind nodeset="/data/ephemeral_pregnancy/hh_fp_flow/note_fp_3" readonly="true()" relevant="selected( /data/ephemeral_pregnancy/hh_fp_flow/hh_fp , 'false') and selected( /data/ephemeral_pregnancy/hh_fp_flow/hh_fp_enroll , 'false')" type="string"/>
-      <bind constraint=". &gt;= 0" jr:constraintMsg="Number of children must be greater than 0" nodeset="/data/ephemeral_pregnancy/g_children_under_5" required="true()" type="int"/>
-      <bind constraint=". &gt;= 0" jr:constraintMsg="Number of women above 12 and below 52 must be greater than or equal to 0" nodeset="/data/ephemeral_pregnancy/g_women_15_to_49" required="true()" type="int"/>
-      <bind nodeset="/data/ephemeral_pregnancy/note_msg" readonly="true()" relevant=" /data/ephemeral_pregnancy/g_women_15_to_49 &gt;0 or  /data/ephemeral_pregnancy/g_children_under_5 &gt;0" type="string"/>
-      <bind nodeset="/data/repeat" relevant=" /data/ephemeral_pregnancy/g_women_15_to_49 &gt;0 or  /data/ephemeral_pregnancy/g_children_under_5 &gt;0"/>
-      <bind calculate="number( /data/ephemeral_pregnancy/g_children_under_5 ) + number( /data/ephemeral_pregnancy/g_women_15_to_49 )" nodeset="/data/repeat/child_count" readonly="true()" type="string"/>
-      <bind nodeset="/data/repeat/child/type" type="string"/>
-      <bind nodeset="/data/repeat/child/parent" type="string"/>
-      <bind calculate="../c_name" nodeset="/data/repeat/child/name" required="true()" type="string"/>
-      <bind calculate="../c_dob_iso" nodeset="/data/repeat/child/date_of_birth" type="string"/>
-      <bind calculate="../c_sex" nodeset="/data/repeat/child/sex" type="string"/>
-      <bind calculate=" /data/repeat/child/group_other_woman_pregnancy/other-woman-pregnant ='true'" nodeset="/data/repeat/child/pregnant_at_registration" type="string"/>
-      <bind nodeset="/data/repeat/child/c_name" type="string"/>
-      <bind nodeset="/data/repeat/child/family_member_type" required="true()" type="select1"/>
-      <bind nodeset="/data/repeat/child/relation" relevant=" /data/repeat/child/family_member_type ='member_eligible_woman'" required="true()" type="select1"/>
-      <bind nodeset="/data/repeat/child/dob_method" required="true()" type="select1"/>
-      <bind constraint=".&lt;today() and floor(difference-in-months(., today() ) div 12 ) &lt;= 5" jr:constraintMsg="Date must be before today and not more than 5 years ago." nodeset="/data/repeat/child/dob_calendar_child" relevant="selected(../dob_method,'calendar') and  /data/repeat/child/family_member_type ='member_child'" required="true()" type="date"/>
-      <bind constraint=".&lt;today() and floor(difference-in-months(., today() ) div 12 ) &gt; 5" jr:constraintMsg="Date must be before today and more than 5 years ago." nodeset="/data/repeat/child/dob_calendar_adult" relevant="selected(../dob_method,'calendar') and  /data/repeat/child/family_member_type ='member_eligible_woman'" required="true()" type="date"/>
-      <bind constraint=". &gt; 5" jr:constraintMsg="Invalid Age Value" nodeset="/data/repeat/child/age_years_adult" relevant="selected(../dob_method,'approx') and  /data/repeat/child/family_member_type ='member_eligible_woman'" required="true()" type="int"/>
-      <bind constraint=". &lt; 5" jr:constraintMsg="Invalid Age Value" nodeset="/data/repeat/child/age_years_child" relevant="selected(../dob_method,'approx') and  /data/repeat/child/family_member_type ='member_child'" required="true()" type="int"/>
-      <bind constraint=". &gt;= 0 and . &lt;= 11" jr:constraintMsg="Months must between 0 and 11" nodeset="/data/repeat/child/age_months_adult" relevant="selected(../dob_method,'approx') and  /data/repeat/child/family_member_type ='member_eligible_woman'" required="true()" type="int"/>
-      <bind constraint=". &gt;= 0 and . &lt;= 11" jr:constraintMsg="Months must between 0 and 11" nodeset="/data/repeat/child/age_months_child" relevant="selected(../dob_method,'approx') and  /data/repeat/child/family_member_type ='member_child'" required="true()" type="int"/>
-      <bind calculate="if( /data/repeat/child/family_member_type ='member_child', ../age_years_child,../age_years_adult)" nodeset="/data/repeat/child/age_years" type="string"/>
-      <bind calculate="if( /data/repeat/child/family_member_type ='member_child', ../age_months_child,../age_months_adult)" nodeset="/data/repeat/child/age_months" type="string"/>
-      <bind calculate="if( /data/repeat/child/family_member_type ='member_child', ../dob_calendar_child,../dob_calendar_adult)" nodeset="/data/repeat/child/dob_calendar" type="string"/>
-      <bind calculate="if(not(selected( ../dob_method,'approx')), 
-../dob_calendar,
-format-date-time( decimal-date-time( today() ) -( (365.25 * int(../age_years)) - (30.5 * int(../age_months) )), &quot;%Y-%m-%d&quot; ) )" nodeset="/data/repeat/child/dob_raw" type="string"/>
-      <bind calculate="format-date-time(../dob_raw,&quot;%Y-%m-%d&quot;)" nodeset="/data/repeat/child/c_dob_iso" type="string"/>
-      <bind calculate="floor(difference-in-months(date( /data/repeat/child/c_dob_iso ),today()) div 12)" nodeset="/data/repeat/child/current_age" type="string"/>
-      <bind nodeset="/data/repeat/child/c_sex" relevant=" /data/repeat/child/family_member_type ='member_child'" type="select1"/>
-      <bind nodeset="/data/repeat/child/group_other_woman_pregnancy" relevant=" /data/repeat/child/family_member_type ='member_eligible_woman' and  /data/repeat/child/current_age  &gt;= 12 and  /data/repeat/child/current_age  &lt;= 52"/>
-      <bind nodeset="/data/repeat/child/group_other_woman_pregnancy/married" required="true()" type="select1"/>
-      <bind nodeset="/data/repeat/child/group_other_woman_pregnancy/other-woman-pregnant" type="select1"/>
-      <bind nodeset="/data/repeat/child/group_other_woman_pregnancy/o_lmp" required="true()" type="select1"/>
-      <bind constraint=". &lt; today()" nodeset="/data/repeat/child/group_other_woman_pregnancy/o_lmp_start" relevant="selected( /data/repeat/child/group_other_woman_pregnancy/o_lmp ,'true')" type="date"/>
-      <bind nodeset="/data/repeat/child/group_other_woman_pregnancy/o_lmp_approx" relevant="selected( /data/repeat/child/group_other_woman_pregnancy/o_lmp ,'false')" required="true()" type="select1"/>
-      <bind nodeset="/data/repeat/child/group_other_woman_pregnancy/p_test" relevant=" /data/repeat/child/group_other_woman_pregnancy/o_lmp_approx ='2mo' or  /data/repeat/child/group_other_woman_pregnancy/o_lmp_approx ='3mo'" required="true()" type="select1"/>
-      <bind nodeset="/data/repeat/child/group_other_woman_pregnancy/p_test_result" relevant=" /data/repeat/child/group_other_woman_pregnancy/p_test ='true'" required="true()" type="select1"/>
-      <bind nodeset="/data/repeat/child/group_other_woman_pregnancy/p_test_kit" relevant=" /data/repeat/child/group_other_woman_pregnancy/p_test ='false'" required="true()" type="select1"/>
-      <bind nodeset="/data/repeat/child/group_other_woman_pregnancy/p_test_kit_result" relevant=" /data/repeat/child/group_other_woman_pregnancy/p_test_kit ='true'" required="true()" type="select1"/>
-      <bind nodeset="/data/repeat/child/group_other_woman_pregnancy/note_p" readonly="true()" relevant=" /data/repeat/child/group_other_woman_pregnancy/other-woman-pregnant ='true' or  /data/repeat/child/group_other_woman_pregnancy/p_test_result ='pos' or  /data/repeat/child/group_other_woman_pregnancy/p_test_kit_result ='pos'" type="string"/>
-      <bind nodeset="/data/repeat/child/group_other_woman_pregnancy/fp_flow" relevant=" /data/repeat/child/group_other_woman_pregnancy/other-woman-pregnant ='false'"/>
-      <bind nodeset="/data/repeat/child/group_other_woman_pregnancy/fp_flow/fp" required="true()" type="select1"/>
-      <bind constraint="not(selected(., 'fp_none') and count-selected(.)&gt;=2) and count-selected(.)&lt;=2 and not(count-selected(.)=2 and not(selected(., 'condoms') ))" jr:constraintMsg="None cannot be selected along with the other options. 
-Condoms are the only family planing method that can be combined with another family planning method" nodeset="/data/repeat/child/group_other_woman_pregnancy/fp_flow/family_planning_method" relevant="selected( /data/repeat/child/group_other_woman_pregnancy/fp_flow/fp , 'true')" required="true()" type="select"/>
-      <bind nodeset="/data/repeat/child/group_other_woman_pregnancy/fp_flow/fp_enroll" relevant="selected( /data/repeat/child/group_other_woman_pregnancy/fp_flow/fp , 'false') or selected( /data/repeat/child/group_other_woman_pregnancy/fp_flow/family_planning_method , 'fp_none')" required="true()" type="select1"/>
-      <bind constraint="count-selected(.)&lt;=2 and not(count-selected(.)=2 and not(selected(., 'condoms') ))" jr:constraintMsg="Condoms are the only family planing method that can be combined with another family planning method" nodeset="/data/repeat/child/group_other_woman_pregnancy/fp_flow/fp_method_choice" relevant="selected( /data/repeat/child/group_other_woman_pregnancy/fp_flow/fp_enroll , 'true')" required="true()" type="select"/>
-      <bind nodeset="/data/repeat/child/group_other_woman_pregnancy/fp_flow/note_fp_1" readonly="true()" relevant="selected( /data/repeat/child/group_other_woman_pregnancy/fp_flow/fp_enroll , 'true') and not(selected( /data/repeat/child/group_other_woman_pregnancy/fp_flow/fp_method_choice , 'iud') or selected( /data/repeat/child/group_other_woman_pregnancy/fp_flow/fp_method_choice , 'btl') or selected( /data/repeat/child/group_other_woman_pregnancy/fp_flow/fp_method_choice , 'norplant'))" type="string"/>
-      <bind nodeset="/data/repeat/child/group_other_woman_pregnancy/fp_flow/note_fp_2" readonly="true()" relevant="selected( /data/repeat/child/group_other_woman_pregnancy/fp_flow/fp_enroll , 'true') and (selected( /data/repeat/child/group_other_woman_pregnancy/fp_flow/fp_method_choice , 'iud') or selected( /data/repeat/child/group_other_woman_pregnancy/fp_flow/fp_method_choice , 'btl') or selected( /data/repeat/child/group_other_woman_pregnancy/fp_flow/fp_method_choice , 'norplant'))" type="string"/>
-      <bind nodeset="/data/repeat/child/group_other_woman_pregnancy/fp_flow/note_fp_3" readonly="true()" relevant="selected( /data/repeat/child/group_other_woman_pregnancy/fp_flow/fp , 'false') and selected( /data/repeat/child/group_other_woman_pregnancy/fp_flow/fp_enroll , 'false')" type="string"/>
+      <bind calculate=" /data/contact/hh_name " nodeset="/data/contact/name" required="true()" type="string"/>
+      <bind calculate=" /data/contact/hh_notes " nodeset="/data/contact/notes" type="string"/>
+      <bind calculate=" /data/contact/g_sex " nodeset="/data/contact/sex" type="string"/>
+      <bind calculate=" /data/contact/dob_method " nodeset="/data/contact/date_of_birth_method" type="string"/>
+      <bind calculate=" /data/contact/dob_iso " nodeset="/data/contact/date_of_birth" type="string"/>
+      <bind calculate=" /data/ephemeral_phone/tel_number/phone1 " nodeset="/data/contact/phone" type="string"/>
+      <bind calculate=" /data/ephemeral_phone/tel_number/phone2 " nodeset="/data/contact/alternate_phone" type="string"/>
+      <bind calculate=" /data/contact/Is_pregnant " nodeset="/data/contact/pregnant_at_registration" type="string"/>
+      <bind calculate="floor(difference-in-months(date( /data/contact/dob_iso ),today()) div 12)" nodeset="/data/contact/age" type="string"/>
+      <bind nodeset="/data/contact/hh_name" required="true()" type="string"/>
+      <bind nodeset="/data/contact/g_sex" required="true()" type="select1"/>
+      <bind nodeset="/data/contact/hh_notes" required="false()" type="string"/>
+      <bind nodeset="/data/contact/dob_method" required="true()" type="select1"/>
+      <bind constraint="floor(decimal-date-time(.)) &lt;= floor(decimal-date-time(today()))" jr:constraintMsg="Date must be before today" nodeset="/data/contact/dob_calendar" relevant="selected( /data/contact/dob_method ,'date_of_birth')" required="true()" type="date"/>
+      <bind constraint=". &gt;= 0 and . &lt;= 130" jr:constraintMsg="Age must be between 0 and 130" nodeset="/data/contact/age_years" relevant="selected( /data/contact/dob_method ,'age')" required="true()" type="int"/>
+      <bind calculate="int(format-date-time(today(), &quot;%Y&quot;))- /data/contact/age_years " nodeset="/data/contact/approx_birth_year" type="string"/>
+      <bind calculate="date(concat(string( /data/contact/approx_birth_year ),'-',string(format-date-time(today(), &quot;%m&quot;)),'-',string(format-date-time(today(), &quot;%d&quot;))))" nodeset="/data/contact/dob_approx" type="string"/>
+      <bind calculate="if(not(selected( ../dob_method,'age')), 
+ /data/contact/dob_calendar ,
+ /data/contact/dob_approx )" nodeset="/data/contact/dob_raw" type="string"/>
+      <bind calculate="format-date-time(../dob_raw,&quot;%Y-%m-%d&quot;)" nodeset="/data/contact/dob_iso" type="string"/>
+      <bind nodeset="/data/contact/dob_debug" readonly="true()" relevant="false()" type="string"/>
+      <bind nodeset="/data/contact/Is_pregnant" relevant=" /data/contact/g_sex  = 'female' and  /data/contact/age  &gt;=12 and  /data/contact/age  &lt;=50" required="true()" type="select1"/>
+      <bind nodeset="/data/ephemeral_phone/hh_has_phone" required="true()" type="select1"/>
+      <bind nodeset="/data/ephemeral_phone/tel_number" relevant="selected( /data/ephemeral_phone/hh_has_phone ,'true')"/>
+      <bind constraint="regex(.,'^\+256\s?(\d{3}\s?){3}|^07\d{2}\s?(\d{3}\s?){2}')" jr:constraintMsg="Please make sure the number is not already in use by another person and is in the format +256 7XX XXX XXX or 07XX XXX XXX." nodeset="/data/ephemeral_phone/tel_number/phone1" required="true()" type="tel"/>
+      <bind constraint="regex(.,'^\+256\s?(\d{3}\s?){3}|^07\d{2}\s?(\d{3}\s?){2}')" jr:constraintMsg="Please make sure the number is not already in use by another person and is in the format +256 7XX XXX XXX or 07XX XXX XXX." nodeset="/data/ephemeral_phone/tel_number/phone2" required="false()" type="tel"/>
+      <bind nodeset="/data/family_members_info/hh_fam_members" required="true()" type="select1"/>
+      <bind nodeset="/data/family_members_info/number_fam_members" relevant="selected( /data/family_members_info/hh_fam_members ,'true')" required="true()" type="int"/>
+      <bind nodeset="/data/family_members_info/msg_CHW" readonly="true()" relevant="selected( /data/family_members_info/hh_fam_members ,'true')" type="string"/>
+      <bind nodeset="/data/repeat" relevant="selected( /data/family_members_info/hh_fam_members ,'true')"/>
+      <bind nodeset="/data/repeat/add_person_repeat/type" type="string"/>
+      <bind nodeset="/data/repeat/add_person_repeat/parent" type="string"/>
+      <bind calculate="../c_name" nodeset="/data/repeat/add_person_repeat/name" required="true()" type="string"/>
+      <bind calculate="../c_dob_iso" nodeset="/data/repeat/add_person_repeat/date_of_birth" type="string"/>
+      <bind calculate="../c_sex" nodeset="/data/repeat/add_person_repeat/sex" type="string"/>
+      <bind calculate="&quot;NEW&quot;" nodeset="/data/repeat/add_person_repeat/contact" type="string"/>
+      <bind calculate=" /data/repeat/add_person_repeat/c_dob_method " nodeset="/data/repeat/add_person_repeat/date_of_birth_method" type="string"/>
+      <bind calculate=" /data/repeat/add_person_repeat/c_tel_number/c_phone1 " nodeset="/data/repeat/add_person_repeat/phone" type="string"/>
+      <bind calculate=" /data/repeat/add_person_repeat/c_tel_number/c_phone2 " nodeset="/data/repeat/add_person_repeat/alternate_phone" type="string"/>
+      <bind nodeset="/data/repeat/add_person_repeat/c_name" required="true()" type="string"/>
+      <bind nodeset="/data/repeat/add_person_repeat/c_name_tel" required="true()" type="select1"/>
+      <bind nodeset="/data/repeat/add_person_repeat/c_tel_number" relevant="selected( /data/repeat/add_person_repeat/c_name_tel ,'true')"/>
+      <bind constraint="regex(.,'^\+256\s?(\d{3}\s?){3}|^07\d{2}\s?(\d{3}\s?){2}')" jr:constraintMsg="Please make sure the number is not already in use by another person and is in the format +256 7XX XXX XXX or 07XX XXX XXX." nodeset="/data/repeat/add_person_repeat/c_tel_number/c_phone1" required="true()" type="tel"/>
+      <bind constraint="regex(.,'^\+256\s?(\d{3}\s?){3}|^07\d{2}\s?(\d{3}\s?){2}')" jr:constraintMsg="Please make sure the number is not already in use by another person and is in the format +256 7XX XXX XXX or 07XX XXX XXX." nodeset="/data/repeat/add_person_repeat/c_tel_number/c_phone2" required="false()" type="tel"/>
+      <bind nodeset="/data/repeat/add_person_repeat/c_sex" required="true()" type="select1"/>
+      <bind nodeset="/data/repeat/add_person_repeat/c_dob_method" required="true()" type="select1"/>
+      <bind nodeset="/data/repeat/add_person_repeat/dob_calendar_person" relevant="selected( /data/repeat/add_person_repeat/c_dob_method ,'date_of_birth')" required="true()" type="date"/>
+      <bind nodeset="/data/repeat/add_person_repeat/age_years_person" relevant="selected( /data/repeat/add_person_repeat/c_dob_method ,'age')" required="true()" type="int"/>
+      <bind calculate="if(selected( ../c_dob_method,'date_of_birth'), 
+../dob_calendar_person,
+format-date-time( decimal-date-time( today() ) - (365.25 * ../age_years_person) , &quot;%Y-%m-%d&quot;) )" nodeset="/data/repeat/add_person_repeat/dob_raw" type="string"/>
+      <bind calculate="format-date-time(../dob_raw,&quot;%Y-%m-%d&quot;)" nodeset="/data/repeat/add_person_repeat/c_dob_iso" type="string"/>
+      <bind calculate="floor(difference-in-months(date( /data/repeat/add_person_repeat/c_dob_iso ),today()) div 12)" nodeset="/data/repeat/add_person_repeat/current_age" type="string"/>
+      <bind nodeset="/data/repeat/add_person_repeat/person_pregnant" relevant=" /data/repeat/add_person_repeat/c_sex ='female' and  /data/repeat/add_person_repeat/current_age  &gt;=12 and  /data/repeat/add_person_repeat/current_age  &lt;=52" required="true()" type="select1"/>
+      <bind nodeset="/data/repeat/add_person_repeat/CHW_msg_two" readonly="true()" relevant=" /data/repeat/add_person_repeat/person_pregnant ='true'" type="string"/>
+      <bind nodeset="/data/repeat/add_person_repeat/lmc_group" relevant=" /data/repeat/add_person_repeat/person_pregnant ='false'"/>
+      <bind nodeset="/data/repeat/add_person_repeat/lmc_group/c_name_lmc" required="true()" type="select1"/>
+      <bind nodeset="/data/repeat/add_person_repeat/lmc_group/date_of_lmc" relevant="selected( /data/repeat/add_person_repeat/lmc_group/c_name_lmc ,'true')" required="true()" type="date"/>
+      <bind nodeset="/data/repeat/add_person_repeat/lmc_group/approx_lmc" relevant="selected( /data/repeat/add_person_repeat/lmc_group/c_name_lmc ,'false')" required="true()" type="select1"/>
+      <bind nodeset="/data/repeat/add_person_repeat/lmc_group/CHW_msg_three" readonly="true()" relevant=" /data/repeat/add_person_repeat/lmc_group/approx_lmc ='up_to_2' or  /data/repeat/add_person_repeat/lmc_group/approx_lmc ='up_to_3' or  /data/repeat/add_person_repeat/lmc_group/approx_lmc ='up_to_4'" type="string"/>
+      <bind nodeset="/data/repeat/add_person_repeat/relation_with_hh" required="true()" type="select1"/>
+      <bind nodeset="/data/repeat/add_person_repeat/hh_relation_other" relevant=" /data/repeat/add_person_repeat/relation_with_hh ='others'" required="true()" type="string"/>
+      <bind nodeset="/data/repeat/add_person_repeat/primary_care_group/primary_care" required="true()" type="string"/>
+      <bind nodeset="/data/family_summary/r_details" readonly="true()" type="string"/>
+      <bind nodeset="/data/family_summary/r_family_head" readonly="true()" type="string"/>
       <bind calculate="/data/inputs/user/facility_id" nodeset="/data/clinic/parent" type="string"/>
       <bind calculate="concat(../../contact/name, ' Family')" nodeset="/data/clinic/name" type="string"/>
       <bind calculate="concat(../../inputs/meta/location/lat, concat(' ', ../../inputs/meta/location/long))" nodeset="/data/clinic/geolocation" type="string"/>
       <bind calculate="&quot;NEW&quot;" nodeset="/data/clinic/contact" type="string"/>
-      <bind nodeset="/data/clinic/household_survey/safe_water" type="select1"/>
-      <bind nodeset="/data/clinic/household_survey/source_clean_water" relevant=" /data/clinic/household_survey/safe_water ='true'" type="select"/>
-      <bind nodeset="/data/clinic/household_survey/source_of_drinking_water" relevant=" /data/clinic/household_survey/safe_water ='false'" required="true()" type="select"/>
-      <bind nodeset="/data/clinic/household_survey/kitchen" required="true()" type="select1"/>
-      <bind nodeset="/data/clinic/household_survey/drying_rack" required="true()" type="select1"/>
-      <bind nodeset="/data/clinic/household_survey/rubbish_pit" required="true()" type="select1"/>
-      <bind nodeset="/data/clinic/household_survey/hygeinic_toilet" required="true()" type="select1"/>
-      <bind nodeset="/data/clinic/household_survey/mosquito_nets" required="true()" type="select1"/>
       <bind calculate="concat('uuid:', uuid())" nodeset="/data/meta/instanceID" readonly="true()" type="string"/>
     </model>
   </h:head>
   <h:body class="pages">
     <group ref="/data/inputs">
+      <label>Input</label>
       <group ref="/data/inputs/user">
+        <label>user</label>
         <input ref="/data/inputs/user/facility_id">
           <label>Facility ID for the parent user</label>
         </input>
       </group>
     </group>
     <group appearance="field-list" ref="/data/contact">
-      <label>Primary Caregiver</label>
+      <label>FAMILY INFORMATION</label>
       <input ref="/data/contact/debug_note">
         <label>Debug: <output value=" /data/inputs/user/facility_id "/></label>
       </input>
@@ -245,16 +205,10 @@ Condoms are the only family planing method that can be combined with another fam
         <label>Parent</label>
         <hint>mandatory</hint>
       </input>
-      <input ref="/data/contact/care_giver">
-        <label>Primary Caregiver</label>
+      <input ref="/data/contact/hh_name">
+        <label>Name</label>
       </input>
-      <input appearance="numbers" ref="/data/contact/phone1">
-        <label>Primary Phone Number</label>
-      </input>
-    </group>
-    <group appearance="field-list" ref="/data/ephemeral_dob">
-      <label>Primary Caregiver</label>
-      <select1 appearance="horizontal" ref="/data/ephemeral_dob/g_sex">
+      <select1 ref="/data/contact/g_sex">
         <label>Sex</label>
         <item>
           <label>Female</label>
@@ -265,28 +219,49 @@ Condoms are the only family planing method that can be combined with another fam
           <value>male</value>
         </item>
       </select1>
-      <select1 appearance="horizontal hidden" ref="/data/ephemeral_dob/contact_dob_method">
-        <label>Method to select date of birth</label>
+      <input ref="/data/contact/hh_notes">
+        <label>Notes</label>
+      </input>
+      <select1 ref="/data/contact/dob_method">
+        <label>Date of Birth Method</label>
         <item>
-          <label>Date (preferred)</label>
-          <value>calendar</value>
+          <label>Date of birth (preferred)</label>
+          <value>date_of_birth</value>
         </item>
         <item>
-          <label>Current age</label>
-          <value>approx</value>
+          <label>Current Age</label>
+          <value>age</value>
         </item>
       </select1>
-      <input ref="/data/ephemeral_dob/dob_calendar">
-        <label>Date of Birth</label>
-      </input>
-      <input ref="/data/ephemeral_dob/age">
+      <input ref="/data/contact/dob_calendar">
         <label>Age</label>
+        <hint>Date of Birth</hint>
       </input>
+      <input ref="/data/contact/age_years">
+        <label>Age</label>
+        <hint>Years</hint>
+      </input>
+      <input appearance="hidden" ref="/data/contact/dob_debug">
+        <label>Year: <output value=" /data/contact/approx_birth_year "/>
+DOB Approx: <output value=" /data/contact/dob_approx "/>
+DOB Calendar: <output value=" /data/contact/dob_calendar "/>
+DOB ISO: <output value=" /data/contact/dob_iso "/></label></input>
+      <select1 ref="/data/contact/Is_pregnant">
+        <label>Is <output value=" /data/contact/hh_name "/> currently pregnant?</label>
+        <item>
+          <label>Yes</label>
+          <value>true</value>
+        </item>
+        <item>
+          <label>No</label>
+          <value>false</value>
+        </item>
+      </select1>
     </group>
-    <group appearance="field-list" ref="/data/ephemeral_pregnancy">
-      <label>Primary Caregiver</label>
-      <select1 appearance="horizontal" ref="/data/ephemeral_pregnancy/pregnant">
-        <label>Is <output value=" /data/ephemeral_pregnancy/display_name "/> currently pregnant?</label>
+    <group appearance="field-list" ref="/data/ephemeral_phone">
+      <label>Househead Phone Information</label>
+      <select1 appearance="horizontal" ref="/data/ephemeral_phone/hh_has_phone">
+        <label>Does <output value=" /data/contact/hh_name "/> have a Phone Number</label>
         <item>
           <label>Yes</label>
           <value>true</value>
@@ -296,238 +271,78 @@ Condoms are the only family planing method that can be combined with another fam
           <value>false</value>
         </item>
       </select1>
-      <input ref="/data/ephemeral_pregnancy/note_p_form">
-        <label>Please fill out a Pregnancy Registration for the Primary Caregiver</label>
-      </input>
-      <select1 appearance="horizontal" ref="/data/ephemeral_pregnancy/lmp">
-        <label>Does she know the date of the last menstrual cycle?</label>
-        <item>
-          <label>Yes</label>
-          <value>true</value>
-        </item>
-        <item>
-          <label>No</label>
-          <value>false</value>
-        </item>
-      </select1>
-      <input ref="/data/ephemeral_pregnancy/lmp_start">
-        <label>Start date of the last cycle</label>
-      </input>
-      <select1 ref="/data/ephemeral_pregnancy/lmp_approx">
-        <label>Approximate date of last cycle</label>
-        <item>
-          <label>Up to 2 months</label>
-          <value>2mo</value>
-        </item>
-        <item>
-          <label>Up to 3 months</label>
-          <value>3mo</value>
-        </item>
-        <item>
-          <label>Up to 4 months</label>
-          <value>4mo</value>
-        </item>
-        <item>
-          <label>Between 5 to 6 months ago</label>
-          <value>6mo</value>
-        </item>
-        <item>
-          <label>Between 7 to 8 months ago</label>
-          <value>8mo</value>
-        </item>
-        <item>
-          <label>One month ago</label>
-          <value>1mo</value>
-        </item>
-      </select1>
-      <group ref="/data/ephemeral_pregnancy/hh_fp_flow">
-        <select1 appearance="horizontal" ref="/data/ephemeral_pregnancy/hh_fp_flow/hh_fp">
-          <label>Is she using any family planning method?</label>
-          <item>
-            <label>Yes</label>
-            <value>true</value>
-          </item>
-          <item>
-            <label>No</label>
-            <value>false</value>
-          </item>
-        </select1>
-        <select appearance="horizontal" ref="/data/ephemeral_pregnancy/hh_fp_flow/hh_family_planning_method">
-          <label>Which method is she using?</label>
-          <item>
-            <label>Intrauterine Device (IUD)</label>
-            <value>iud</value>
-          </item>
-          <item>
-            <label>Condoms</label>
-            <value>condoms</value>
-          </item>
-          <item>
-            <label>Bilateral Tubal Ligation</label>
-            <value>btl</value>
-          </item>
-          <item>
-            <label>Emergency pill</label>
-            <value>emergency_pill</value>
-          </item>
-          <item>
-            <label>Subdermal Impant (Implanon, Norplant)</label>
-            <value>norplant</value>
-          </item>
-          <item>
-            <label>Depoprovera</label>
-            <value>depoprovera</value>
-          </item>
-          <item>
-            <label>Progestrone Only Pills (POPs)</label>
-            <value>progesterone</value>
-          </item>
-          <item>
-            <label>Subcutaneous DMPA- (Sayana Press)</label>
-            <value>dmpa</value>
-          </item>
-          <item>
-            <label>Combined Oral Contraceptive Pills- COPs</label>
-            <value>cop</value>
-          </item>
-          <item>
-            <label>None</label>
-            <value>fp_none</value>
-          </item>
-        </select>
-        <select1 appearance="horizontal" ref="/data/ephemeral_pregnancy/hh_fp_flow/hh_fp_enroll">
-          <label>Would she like to enroll in family planning?</label>
-          <item>
-            <label>Yes</label>
-            <value>true</value>
-          </item>
-          <item>
-            <label>No</label>
-            <value>false</value>
-          </item>
-        </select1>
-        <select ref="/data/ephemeral_pregnancy/hh_fp_flow/hh_fp_method_choice">
-          <label>Choose family planning method</label>
-          <item>
-            <label>Combined Oral Contraceptive Pills- COPs</label>
-            <value>cop</value>
-          </item>
-          <item>
-            <label>Progestrone Only Pills (POPs)</label>
-            <value>progesterone</value>
-          </item>
-          <item>
-            <label>Subcutaneous DMPA- (Sayana Press)</label>
-            <value>dmpa</value>
-          </item>
-          <item>
-            <label>Intrauterine Device (IUD)</label>
-            <value>iud</value>
-          </item>
-          <item>
-            <label>Subdermal Impant</label>
-            <value>norplant</value>
-          </item>
-          <item>
-            <label>Bilateral Tubal Ligation</label>
-            <value>btl</value>
-          </item>
-          <item>
-            <label>Condoms</label>
-            <value>condoms</value>
-          </item>
-        </select>
-        <input ref="/data/ephemeral_pregnancy/hh_fp_flow/note_fp_1">
-          <label>Please administer choosen FP method</label>
+      <group ref="/data/ephemeral_phone/tel_number">
+        <label></label>
+        <input appearance="numbers" ref="/data/ephemeral_phone/tel_number/phone1">
+          <label>Primary Mobile Number</label>
+          <hint>Use one of the following format: +256 7XX XXX XXX also please ensure the number is not already registered</hint>
         </input>
-        <input ref="/data/ephemeral_pregnancy/hh_fp_flow/note_fp_2">
-          <label>Please refer client to the health facility</label>
-        </input>
-        <input ref="/data/ephemeral_pregnancy/hh_fp_flow/note_fp_3">
-          <label>Thank you for your time, I will get back to you to discuss further after a month</label>
+        <input appearance="numbers" ref="/data/ephemeral_phone/tel_number/phone2">
+          <label>Secondary Mobile Number</label>
+          <hint>Use one of the following format: +256 7XX XXX XXX also please ensure the number is not already registered</hint>
         </input>
       </group>
-      <input ref="/data/ephemeral_pregnancy/g_children_under_5">
-        <label>How many under 5 children are in the family of <output value=" /data/ephemeral_pregnancy/display_name "/>?</label>
+    </group>
+    <group appearance="field-list" ref="/data/family_members_info">
+      <label>Family Members Information</label>
+      <select1 ref="/data/family_members_info/hh_fam_members">
+        <label>Are there other family members in <output value=" /data/contact/hh_name "/>'s homestead?</label>
+        <item>
+          <label>Yes</label>
+          <value>true</value>
+        </item>
+        <item>
+          <label>No</label>
+          <value>false</value>
+        </item>
+      </select1>
+      <input ref="/data/family_members_info/number_fam_members">
+        <label>How many family members are there?</label>
       </input>
-      <input ref="/data/ephemeral_pregnancy/g_women_15_to_49">
-        <label>How many women aged between 12 and 52 are in the family of <output value=" /data/ephemeral_pregnancy/display_name "/>?</label>
-      </input>
-      <input ref="/data/ephemeral_pregnancy/note_msg">
-        <label>Please add the name of the family members</label>
+      <input ref="/data/family_members_info/msg_CHW">
+        <label>Please add all the family members using the Add Person button</label>
       </input>
     </group>
     <group appearance="field-list" ref="/data/repeat">
-      <label>Other Family Members</label>
-      <group ref="/data/repeat/child">
-        <label></label>
-        <repeat appearance="field-list" jr:count=" /data/repeat/child_count " nodeset="/data/repeat/child">
-          <input appearance="hidden" ref="/data/repeat/child/type">
+      <label>Add Person</label>
+      <group ref="/data/repeat/add_person_repeat">
+        <label>Other House Members</label>
+        <repeat nodeset="/data/repeat/add_person_repeat">
+          <input appearance="hidden" ref="/data/repeat/add_person_repeat/type">
             <label>Person Type</label>
             <hint>mandatory</hint>
           </input>
-          <input appearance="hidden" ref="/data/repeat/child/parent">
+          <input appearance="hidden" ref="/data/repeat/add_person_repeat/parent">
             <label>Parent</label>
             <hint>mandatory</hint>
           </input>
-          <input ref="/data/repeat/child/c_name">
+          <input ref="/data/repeat/add_person_repeat/c_name">
             <label>Name</label>
           </input>
-          <select1 ref="/data/repeat/child/family_member_type">
-            <label>Choose family member type</label>
+          <select1 ref="/data/repeat/add_person_repeat/c_name_tel">
+            <label>Does <output value=" /data/repeat/add_person_repeat/c_name "/> have a Phone Number?</label>
             <item>
-              <label>Under 5 Child</label>
-              <value>member_child</value>
+              <label>Yes</label>
+              <value>true</value>
             </item>
             <item>
-              <label>Eligible Woman</label>
-              <value>member_eligible_woman</value>
-            </item>
-          </select1>
-          <select1 ref="/data/repeat/child/relation">
-            <label>Relationship to Primary Care Giver</label>
-            <item>
-              <label>Spouse</label>
-              <value>spouse</value>
-            </item>
-            <item>
-              <label>Child</label>
-              <value>child</value>
-            </item>
-            <item>
-              <label>Other</label>
-              <value>other</value>
+              <label>No</label>
+              <value>false</value>
             </item>
           </select1>
-          <select1 appearance="horizontal" ref="/data/repeat/child/dob_method">
-            <label>Method to select date of birth</label>
-            <item>
-              <label>Date (preferred)</label>
-              <value>calendar</value>
-            </item>
-            <item>
-              <label>Current age</label>
-              <value>approx</value>
-            </item>
-          </select1>
-          <input ref="/data/repeat/child/dob_calendar_child">
-            <label>Date of Birth</label>
-          </input>
-          <input ref="/data/repeat/child/dob_calendar_adult">
-            <label>Date of Birth</label>
-          </input>
-          <input ref="/data/repeat/child/age_years_adult">
-            <label>Age (in years and months)</label>
-            <hint>Age in years</hint>
-          </input>
-          <input ref="/data/repeat/child/age_years_child">
-            <label>Age (in years and months)</label>
-            <hint>Age in years</hint>
-          </input>
-          <input ref="/data/repeat/child/age_months_adult"/>
-          <input ref="/data/repeat/child/age_months_child"/>
-          <select1 appearance="horizontal" ref="/data/repeat/child/c_sex">
-            <label>Gender</label>
+          <group ref="/data/repeat/add_person_repeat/c_tel_number">
+            <label></label>
+            <input appearance="numbers" ref="/data/repeat/add_person_repeat/c_tel_number/c_phone1">
+              <label>Primary Mobile Number</label>
+              <hint>Use one of the following format: +256 7XX XXX XXX also please ensure the number is not already registered</hint>
+            </input>
+            <input appearance="numbers" ref="/data/repeat/add_person_repeat/c_tel_number/c_phone2">
+              <label>Secondary Mobile Number</label>
+              <hint>Use one of the following format: +256 7XX XXX XXX also please ensure the number is not already registered</hint>
+            </input>
+          </group>
+          <select1 ref="/data/repeat/add_person_repeat/c_sex">
+            <label>Sex</label>
             <item>
               <label>Female</label>
               <value>female</value>
@@ -537,9 +352,41 @@ Condoms are the only family planing method that can be combined with another fam
               <value>male</value>
             </item>
           </select1>
-          <group appearance="field-list" ref="/data/repeat/child/group_other_woman_pregnancy">
-            <select1 appearance="horizontal" ref="/data/repeat/child/group_other_woman_pregnancy/married">
-              <label>Is she married?</label>
+          <select1 ref="/data/repeat/add_person_repeat/c_dob_method">
+            <label>Age</label>
+            <item>
+              <label>Date of birth (preferred)</label>
+              <value>date_of_birth</value>
+            </item>
+            <item>
+              <label>Current Age</label>
+              <value>age</value>
+            </item>
+          </select1>
+          <input ref="/data/repeat/add_person_repeat/dob_calendar_person">
+            <label>Date of Birth</label>
+          </input>
+          <input ref="/data/repeat/add_person_repeat/age_years_person">
+            <label>Age (in years and months)</label>
+          </input>
+          <select1 ref="/data/repeat/add_person_repeat/person_pregnant">
+            <label>Is <output value=" /data/repeat/add_person_repeat/c_name "/> currently pregnant?</label>
+            <item>
+              <label>Yes</label>
+              <value>true</value>
+            </item>
+            <item>
+              <label>No</label>
+              <value>false</value>
+            </item>
+          </select1>
+          <input ref="/data/repeat/add_person_repeat/CHW_msg_two">
+            <label>Please fill out a pregnancy registration for <output value=" /data/repeat/add_person_repeat/c_name "/> after submitting this household registration if they have started their ANC visits, and encourage mother to go to health facility for pregnancy confirmation if they have not started ANC clinic.</label>
+          </input>
+          <group ref="/data/repeat/add_person_repeat/lmc_group">
+            <label></label>
+            <select1 ref="/data/repeat/add_person_repeat/lmc_group/c_name_lmc">
+              <label>Does <output value=" /data/repeat/add_person_repeat/c_name "/> know the start date of last cycle?</label>
               <item>
                 <label>Yes</label>
                 <value>true</value>
@@ -549,329 +396,78 @@ Condoms are the only family planing method that can be combined with another fam
                 <value>false</value>
               </item>
             </select1>
-            <select1 appearance="horizontal" ref="/data/repeat/child/group_other_woman_pregnancy/other-woman-pregnant">
-              <label>Is she currently pregnant?</label>
-              <item>
-                <label>Yes</label>
-                <value>true</value>
-              </item>
-              <item>
-                <label>No</label>
-                <value>false</value>
-              </item>
-              <item>
-                <label>Test not done</label>
-                <value>not_done</value>
-              </item>
-            </select1>
-            <select1 appearance="horizontal" ref="/data/repeat/child/group_other_woman_pregnancy/o_lmp">
-              <label>Does she know the date of the last menstrual cycle?</label>
-              <item>
-                <label>Yes</label>
-                <value>true</value>
-              </item>
-              <item>
-                <label>No</label>
-                <value>false</value>
-              </item>
-            </select1>
-            <input ref="/data/repeat/child/group_other_woman_pregnancy/o_lmp_start">
+            <input ref="/data/repeat/add_person_repeat/lmc_group/date_of_lmc">
               <label>Start date of the last cycle</label>
             </input>
-            <select1 ref="/data/repeat/child/group_other_woman_pregnancy/o_lmp_approx">
+            <select1 ref="/data/repeat/add_person_repeat/lmc_group/approx_lmc">
               <label>Approximate date of last cycle</label>
               <item>
                 <label>Up to 2 months</label>
-                <value>2mo</value>
+                <value>up_to_2</value>
               </item>
               <item>
                 <label>Up to 3 months</label>
-                <value>3mo</value>
+                <value>up_to_3</value>
               </item>
               <item>
                 <label>Up to 4 months</label>
-                <value>4mo</value>
+                <value>up_to_4</value>
               </item>
               <item>
                 <label>Between 5 to 6 months ago</label>
-                <value>6mo</value>
+                <value>btn_5_n_6</value>
               </item>
               <item>
                 <label>Between 7 to 8 months ago</label>
-                <value>8mo</value>
-              </item>
-              <item>
-                <label>One month ago</label>
-                <value>1mo</value>
+                <value>btn_7_n_8</value>
               </item>
             </select1>
-            <select1 ref="/data/repeat/child/group_other_woman_pregnancy/p_test">
-              <label>Have you had a pregnancy test done?</label>
-              <item>
-                <label>Yes</label>
-                <value>true</value>
-              </item>
-              <item>
-                <label>No</label>
-                <value>false</value>
-              </item>
-            </select1>
-            <select1 ref="/data/repeat/child/group_other_woman_pregnancy/p_test_result">
-              <label>What were the results of the test?</label>
-              <item>
-                <label>Positive</label>
-                <value>pos</value>
-              </item>
-              <item>
-                <label>Negative</label>
-                <value>neg</value>
-              </item>
-            </select1>
-            <select1 ref="/data/repeat/child/group_other_woman_pregnancy/p_test_kit">
-              <label>Would you like to confirm pregnancy using the preganancy kit.</label>
-              <item>
-                <label>Yes</label>
-                <value>true</value>
-              </item>
-              <item>
-                <label>No</label>
-                <value>false</value>
-              </item>
-            </select1>
-            <select1 ref="/data/repeat/child/group_other_woman_pregnancy/p_test_kit_result">
-              <label>Administer the test. What are the results of the test?</label>
-              <item>
-                <label>Positive</label>
-                <value>pos</value>
-              </item>
-              <item>
-                <label>Negative</label>
-                <value>neg</value>
-              </item>
-            </select1>
-            <input ref="/data/repeat/child/group_other_woman_pregnancy/note_p">
-              <label>Please complete a pregnancy registration for this woman</label>
+            <input ref="/data/repeat/add_person_repeat/lmc_group/CHW_msg_three">
+              <label>Please encourage <output value=" /data/repeat/add_person_repeat/c_name "/> to go to health facility for pregnancy test</label>
             </input>
-            <group ref="/data/repeat/child/group_other_woman_pregnancy/fp_flow">
-              <select1 appearance="horizontal" ref="/data/repeat/child/group_other_woman_pregnancy/fp_flow/fp">
-                <label>Is she using any family planning method?</label>
-                <item>
-                  <label>Yes</label>
-                  <value>true</value>
-                </item>
-                <item>
-                  <label>No</label>
-                  <value>false</value>
-                </item>
-              </select1>
-              <select appearance="horizontal" ref="/data/repeat/child/group_other_woman_pregnancy/fp_flow/family_planning_method">
-                <label>Which method is she using?</label>
-                <item>
-                  <label>Intrauterine Device (IUD)</label>
-                  <value>iud</value>
-                </item>
-                <item>
-                  <label>Condoms</label>
-                  <value>condoms</value>
-                </item>
-                <item>
-                  <label>Bilateral Tubal Ligation</label>
-                  <value>btl</value>
-                </item>
-                <item>
-                  <label>Emergency pill</label>
-                  <value>emergency_pill</value>
-                </item>
-                <item>
-                  <label>Subdermal Impant (Implanon, Norplant)</label>
-                  <value>norplant</value>
-                </item>
-                <item>
-                  <label>Depoprovera</label>
-                  <value>depoprovera</value>
-                </item>
-                <item>
-                  <label>Progestrone Only Pills (POPs)</label>
-                  <value>progesterone</value>
-                </item>
-                <item>
-                  <label>Subcutaneous DMPA- (Sayana Press)</label>
-                  <value>dmpa</value>
-                </item>
-                <item>
-                  <label>Combined Oral Contraceptive Pills- COPs</label>
-                  <value>cop</value>
-                </item>
-                <item>
-                  <label>None</label>
-                  <value>fp_none</value>
-                </item>
-              </select>
-              <select1 appearance="horizontal" ref="/data/repeat/child/group_other_woman_pregnancy/fp_flow/fp_enroll">
-                <label>Would she like to enroll in family planning?</label>
-                <item>
-                  <label>Yes</label>
-                  <value>true</value>
-                </item>
-                <item>
-                  <label>No</label>
-                  <value>false</value>
-                </item>
-              </select1>
-              <select ref="/data/repeat/child/group_other_woman_pregnancy/fp_flow/fp_method_choice">
-                <label>Choose family planning method</label>
-                <item>
-                  <label>Combined Oral Contraceptive Pills- COPs</label>
-                  <value>cop</value>
-                </item>
-                <item>
-                  <label>Progestrone Only Pills (POPs)</label>
-                  <value>progesterone</value>
-                </item>
-                <item>
-                  <label>Subcutaneous DMPA- (Sayana Press)</label>
-                  <value>dmpa</value>
-                </item>
-                <item>
-                  <label>Intrauterine Device (IUD)</label>
-                  <value>iud</value>
-                </item>
-                <item>
-                  <label>Subdermal Impant</label>
-                  <value>norplant</value>
-                </item>
-                <item>
-                  <label>Bilateral Tubal Ligation</label>
-                  <value>btl</value>
-                </item>
-                <item>
-                  <label>Condoms</label>
-                  <value>condoms</value>
-                </item>
-              </select>
-              <input ref="/data/repeat/child/group_other_woman_pregnancy/fp_flow/note_fp_1">
-                <label>Please administer choosen FP method</label>
-              </input>
-              <input ref="/data/repeat/child/group_other_woman_pregnancy/fp_flow/note_fp_2">
-                <label>Please refer client to the health facility</label>
-              </input>
-              <input ref="/data/repeat/child/group_other_woman_pregnancy/fp_flow/note_fp_3">
-                <label>Thank you for your time, I will get back to you to discuss further after a month</label>
-              </input>
-            </group>
+          </group>
+          <select1 ref="/data/repeat/add_person_repeat/relation_with_hh">
+            <label>Relationship with Household head</label>
+            <item>
+              <label>Self</label>
+              <value>self</value>
+            </item>
+            <item>
+              <label>Spouse</label>
+              <value>spouse</value>
+            </item>
+            <item>
+              <label>Child</label>
+              <value>child</value>
+            </item>
+            <item>
+              <label>Others (specify)</label>
+              <value>others</value>
+            </item>
+          </select1>
+          <input ref="/data/repeat/add_person_repeat/hh_relation_other">
+            <label>Relationship with Household head</label>
+          </input>
+          <group ref="/data/repeat/add_person_repeat/primary_care_group">
+            <label>Primary Care Giver</label>
+            <input ref="/data/repeat/add_person_repeat/primary_care_group/primary_care">
+              <label>Name of Primary care Giver</label>
+            </input>
           </group>
         </repeat>
       </group>
     </group>
+    <group appearance="field-list summary" ref="/data/family_summary">
+      <label>Summary</label>
+      <input appearance="h1 yellow" ref="/data/family_summary/r_details">
+        <label>Family Details&lt;I class="fa fa-user"&gt;&lt;/i&gt;</label>
+      </input>
+      <input ref="/data/family_summary/r_family_head">
+        <label>&lt;h4 style=&quot;text-align:center;&quot;&gt;Name: <output value=" /data/contact/hh_name "/>&lt;/h4&gt; &lt;h5 style=&quot;text-align:center;&quot;&gt;Age: <output value=" /data/contact/age "/> Years Old&lt;/h5&gt;</label>
+      </input>
+    </group>
     <group ref="/data/clinic">
-      <label>Add Family</label>
-      <group appearance="field-list" ref="/data/clinic/household_survey">
-        <label>Wash</label>
-        <select1 appearance="horizontal" ref="/data/clinic/household_survey/safe_water">
-          <label>Do they have access to safe drinking water?</label>
-          <item>
-            <label>Yes</label>
-            <value>true</value>
-          </item>
-          <item>
-            <label>No</label>
-            <value>false</value>
-          </item>
-        </select1>
-        <select ref="/data/clinic/household_survey/source_clean_water">
-          <label>What is their source of clean drinking water?</label>
-          <item>
-            <label>Boiling</label>
-            <value>boiling</value>
-          </item>
-          <item>
-            <label>Filtration</label>
-            <value>filtration</value>
-          </item>
-          <item>
-            <label>Chlorination (Aqua safe/PUR/Water Guard )</label>
-            <value>chlorination</value>
-          </item>
-          <item>
-            <label>Other</label>
-            <value>other</value>
-          </item>
-        </select>
-        <select ref="/data/clinic/household_survey/source_of_drinking_water">
-          <label>What is their source of water?</label>
-          <item>
-            <label>Boreholes</label>
-            <value>boreholes</value>
-          </item>
-          <item>
-            <label>Spring</label>
-            <value>spring</value>
-          </item>
-          <item>
-            <label>Well</label>
-            <value>well</value>
-          </item>
-          <item>
-            <label>Tap</label>
-            <value>tap</value>
-          </item>
-        </select>
-        <select1 appearance="horizontal" ref="/data/clinic/household_survey/kitchen">
-          <label>Do they have a kitchen?</label>
-          <item>
-            <label>Yes</label>
-            <value>true</value>
-          </item>
-          <item>
-            <label>No</label>
-            <value>false</value>
-          </item>
-        </select1>
-        <select1 appearance="horizontal" ref="/data/clinic/household_survey/drying_rack">
-          <label>Do they have a drying rack?</label>
-          <item>
-            <label>Yes</label>
-            <value>true</value>
-          </item>
-          <item>
-            <label>No</label>
-            <value>false</value>
-          </item>
-        </select1>
-        <select1 appearance="horizontal" ref="/data/clinic/household_survey/rubbish_pit">
-          <label>Do they have a rubbish pit?</label>
-          <item>
-            <label>Yes</label>
-            <value>true</value>
-          </item>
-          <item>
-            <label>No</label>
-            <value>false</value>
-          </item>
-        </select1>
-        <select1 appearance="horizontal" ref="/data/clinic/household_survey/hygeinic_toilet">
-          <label>Do they have an hygienic latrine?</label>
-          <item>
-            <label>Yes</label>
-            <value>true</value>
-          </item>
-          <item>
-            <label>No</label>
-            <value>false</value>
-          </item>
-        </select1>
-        <select1 appearance="horizontal" ref="/data/clinic/household_survey/mosquito_nets">
-          <label>Do they have mosquito nets?</label>
-          <item>
-            <label>Yes</label>
-            <value>true</value>
-          </item>
-          <item>
-            <label>No</label>
-            <value>false</value>
-          </item>
-        </select1>
-      </group>
+      <label>Add Household</label>
     </group>
   </h:body>
 </h:html>

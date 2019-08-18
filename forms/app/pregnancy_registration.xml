@@ -4,7 +4,7 @@
     <h:title>Pregnancy Registration</h:title>
     <model>
       <instance>
-        <pregnancy_registration delimiter="#" id="pregnancy_registration" prefix="J1!pregnancy_registration!" version="2019-08-16 11:14:49">
+        <pregnancy_registration delimiter="#" id="pregnancy_registration" prefix="J1!pregnancy_registration!" version="2019-08-18 14:43:42">
           <inputs>
             <meta>
               <location>
@@ -46,6 +46,14 @@
             <date_of_LMC/>
             <date_of_lmp/>
             <app_LMP/>
+            <lmc_date_value/>
+            <lmc_date_type/>
+            <lmc_date_raw/>
+            <lmc_date/>
+            <edd/>
+            <days_to_edd/>
+            <days_since_lmc/>
+            <ntee/>
             <estimated_date_delivery/>
           </pregnancy_screening>
           <pregnancy_test_details>
@@ -101,9 +109,9 @@
               <danger_signs/>
               <CHW_msg_danger/>
             </danger_signs_group>
-            <date_of_delivery/>
           </anc_screening>
           <group_review>
+            <cal_date_of_delivery/>
             <submit/>
             <r_summary_details/>
             <r_patient_details/>
@@ -137,21 +145,29 @@
       <bind calculate="floor( decimal-date-time(today()) - decimal-date-time( /pregnancy_registration/inputs/contact/date_of_birth ) )" nodeset="/pregnancy_registration/patient_age_in_days" type="string"/>
       <bind calculate="floor((decimal-date-time(today()) - decimal-date-time( /pregnancy_registration/inputs/contact/date_of_birth )) div 7)" nodeset="/pregnancy_registration/patient_age_in_weeks" type="string"/>
       <bind nodeset="/pregnancy_registration/pregnancy_screening/date_of_LMC" required="true()" type="select1"/>
-      <bind constraint=". &lt;=today()" jr:constraintMsg="Can't be a future date" nodeset="/pregnancy_registration/pregnancy_screening/date_of_lmp" relevant=" /pregnancy_registration/pregnancy_screening/date_of_LMC ='yes'" required="true()" type="date"/>
+      <bind constraint=". &lt;today()" jr:constraintMsg="Can't be a future date" nodeset="/pregnancy_registration/pregnancy_screening/date_of_lmp" relevant=" /pregnancy_registration/pregnancy_screening/date_of_LMC ='yes'" required="true()" type="date"/>
       <bind nodeset="/pregnancy_registration/pregnancy_screening/app_LMP" relevant=" /pregnancy_registration/pregnancy_screening/date_of_LMC ='no'" required="true()" type="select1"/>
-      <bind nodeset="/pregnancy_registration/pregnancy_screening/estimated_date_delivery" relevant=" /pregnancy_registration/pregnancy_screening/app_LMP  = 'up_to_4' or  /pregnancy_registration/pregnancy_screening/app_LMP ='btn_5_n_6' or  /pregnancy_registration/pregnancy_screening/app_LMP ='btn_7_n_8'" required="true()" type="date"/>
-      <bind nodeset="/pregnancy_registration/pregnancy_test_details/pregnancy_test" relevant=" /pregnancy_registration/pregnancy_screening/app_LMP  = 'up_to_2' or  /pregnancy_registration/pregnancy_screening/app_LMP ='up_to_3'" required="true()" type="select1"/>
+      <bind calculate="if( /pregnancy_registration/pregnancy_screening/date_of_LMC ='yes', /pregnancy_registration/pregnancy_screening/date_of_lmp , /pregnancy_registration/pregnancy_screening/app_LMP )" nodeset="/pregnancy_registration/pregnancy_screening/lmc_date_value" type="string"/>
+      <bind calculate="if( /pregnancy_registration/pregnancy_screening/date_of_LMC ='yes','calendar','approx')" nodeset="/pregnancy_registration/pregnancy_screening/lmc_date_type" type="string"/>
+      <bind calculate="if( /pregnancy_registration/pregnancy_screening/lmc_date_type ='calendar', /pregnancy_registration/pregnancy_screening/lmc_date_value ,if( /pregnancy_registration/pregnancy_screening/lmc_date_value ='up_to_2',2,if( /pregnancy_registration/pregnancy_screening/lmc_date_value ='up_to_3',3,if( /pregnancy_registration/pregnancy_screening/lmc_date_value ='up_to_3',3,if( /pregnancy_registration/pregnancy_screening/lmc_date_value ='up_to_4',4,if( /pregnancy_registration/pregnancy_screening/lmc_date_value ='btn_5_n_6',5.5,if( /pregnancy_registration/pregnancy_screening/lmc_date_value ='btn_7_n_8',7.5,0)))))))" nodeset="/pregnancy_registration/pregnancy_screening/lmc_date_raw" type="string"/>
+      <bind calculate="format-date-time(if( /pregnancy_registration/pregnancy_screening/lmc_date_type ='calendar',../lmc_date_value,date-time(decimal-date-time(today()) - round(../lmc_date_raw * 30.5, 0))),&quot;%Y-%m-%d&quot;)" nodeset="/pregnancy_registration/pregnancy_screening/lmc_date" type="string"/>
+      <bind calculate="format-date-time(date-time(decimal-date-time(../lmc_date)+280),&quot;%Y-%m-%d&quot;)" nodeset="/pregnancy_registration/pregnancy_screening/edd" type="string"/>
+      <bind calculate="round(decimal-date-time(../edd) - decimal-date-time(today()), 2)" nodeset="/pregnancy_registration/pregnancy_screening/days_to_edd" type="string"/>
+      <bind calculate="round(decimal-date-time(today()) - decimal-date-time(../lmc_date), 2)" nodeset="/pregnancy_registration/pregnancy_screening/days_since_lmc" type="string"/>
+      <bind nodeset="/pregnancy_registration/pregnancy_screening/ntee" readonly="true()" type="string"/>
+      <bind constraint=". &gt; today()" jr:constraintMsg="Must be future date" nodeset="/pregnancy_registration/pregnancy_screening/estimated_date_delivery" readonly="true()" relevant=" /pregnancy_registration/pregnancy_screening/days_since_lmc  &gt;= 122" required="true()" type="string"/>
+      <bind nodeset="/pregnancy_registration/pregnancy_test_details/pregnancy_test" relevant=" /pregnancy_registration/pregnancy_screening/days_since_lmc  &lt; 122" required="true()" type="select1"/>
       <bind nodeset="/pregnancy_registration/pregnancy_test_details/test_results" relevant=" /pregnancy_registration/pregnancy_test_details/pregnancy_test ='yes'" required="true()" type="select1"/>
       <bind nodeset="/pregnancy_registration/pregnancy_test_details/refer_mother_to_facility" readonly="true()" relevant=" /pregnancy_registration/pregnancy_test_details/pregnancy_test ='no'" type="string"/>
       <bind nodeset="/pregnancy_registration/pregnancy_test_details/second_test_results" relevant=" /pregnancy_registration/pregnancy_test_details/test_results ='negative'" required="true()" type="select1"/>
-      <bind nodeset="/pregnancy_registration/pregnancy_test_details/second_estimated_date_delivery" relevant=" /pregnancy_registration/pregnancy_test_details/test_results ='positive' or  /pregnancy_registration/pregnancy_test_details/second_test_results ='positive'" required="true()" type="date"/>
-      <bind nodeset="/pregnancy_registration/anc_screening" relevant=" /pregnancy_registration/pregnancy_test_details/test_results ='positive' or  /pregnancy_registration/pregnancy_test_details/second_test_results ='positive' or  /pregnancy_registration/pregnancy_screening/date_of_LMC ='yes'"/>
+      <bind constraint=". &gt; today()" jr:constraintMsg="Must be future date" nodeset="/pregnancy_registration/pregnancy_test_details/second_estimated_date_delivery" readonly="true()" relevant=" /pregnancy_registration/pregnancy_test_details/test_results ='positive' or  /pregnancy_registration/pregnancy_test_details/second_test_results ='positive'" required="true()" type="string"/>
+      <bind nodeset="/pregnancy_registration/anc_screening" relevant=" /pregnancy_registration/pregnancy_test_details/test_results ='positive' or  /pregnancy_registration/pregnancy_test_details/second_test_results ='positive' or  /pregnancy_registration/pregnancy_screening/days_since_lmc  &gt;= 122"/>
       <bind nodeset="/pregnancy_registration/anc_screening/attended_anc_meeting" required="true()" type="select1"/>
-      <bind nodeset="/pregnancy_registration/anc_screening/date_of_lmc" relevant=" /pregnancy_registration/anc_screening/attended_anc_meeting ='no'" required="true()" type="date"/>
+      <bind constraint=". &lt;=today()" jr:constraintMsg="Can't be a future date" nodeset="/pregnancy_registration/anc_screening/date_of_lmc" relevant=" /pregnancy_registration/anc_screening/attended_anc_meeting ='no'" required="true()" type="date"/>
       <bind nodeset="/pregnancy_registration/anc_screening/anc_meeting" relevant=" /pregnancy_registration/anc_screening/attended_anc_meeting ='yes'"/>
       <bind nodeset="/pregnancy_registration/anc_screening/anc_meeting/number_anc_visits" required="true()" type="select"/>
-      <bind nodeset="/pregnancy_registration/anc_screening/anc_meeting/date_last_anc" required="true()" type="date"/>
-      <bind nodeset="/pregnancy_registration/anc_screening/date_next_visit" required="true()" type="date"/>
+      <bind constraint=". &lt;=today()" jr:constraintMsg="Can't be a future date" nodeset="/pregnancy_registration/anc_screening/anc_meeting/date_last_anc" required="true()" type="date"/>
+      <bind constraint=". &gt;= today()" jr:constraintMsg="should be future date" nodeset="/pregnancy_registration/anc_screening/date_next_visit" required="true()" type="date"/>
       <bind calculate="floor( decimal-date-time(today()) - decimal-date-time( /pregnancy_registration/anc_screening/date_of_lmc )) div 7" nodeset="/pregnancy_registration/anc_screening/weeks_of_lmc" type="string"/>
       <bind nodeset="/pregnancy_registration/anc_screening/malaria_prophylaxis" relevant=" /pregnancy_registration/anc_screening/weeks_of_lmc  &gt; 14"/>
       <bind nodeset="/pregnancy_registration/anc_screening/malaria_prophylaxis/prophylaxis" required="true()" type="select1"/>
@@ -167,13 +183,13 @@
       <bind nodeset="/pregnancy_registration/anc_screening/tentanus_immunization/date_last_tt_dose" relevant=" /pregnancy_registration/anc_screening/tentanus_immunization/tt_immunization ='yes'" required="true()" type="date"/>
       <bind nodeset="/pregnancy_registration/anc_screening/tentanus_immunization/CHW_msg_tt" readonly="true()" relevant=" /pregnancy_registration/anc_screening/tentanus_immunization/tt_immunization ='no'" type="string"/>
       <bind nodeset="/pregnancy_registration/anc_screening/nutrition/CHW_msg_assess" readonly="true()" type="string"/>
-      <bind nodeset="/pregnancy_registration/anc_screening/nutrition/muac_score" required="true()" type="int"/>
+      <bind constraint=". &gt; 0" jr:constraintMsg="cant be negative" nodeset="/pregnancy_registration/anc_screening/nutrition/muac_score" required="true()" type="int"/>
       <bind nodeset="/pregnancy_registration/anc_screening/nutrition/CHW_msg_malnutrition" readonly="true()" relevant=" /pregnancy_registration/anc_screening/nutrition/muac_score &gt;=22" type="string"/>
       <bind nodeset="/pregnancy_registration/anc_screening/nutrition/malnutrition_msg_two" readonly="true()" relevant=" /pregnancy_registration/anc_screening/nutrition/muac_score &gt;=19 and  /pregnancy_registration/anc_screening/nutrition/muac_score &lt;=21.9" type="string"/>
       <bind nodeset="/pregnancy_registration/anc_screening/nutrition/malnutrition_msg_three" readonly="true()" relevant=" /pregnancy_registration/anc_screening/nutrition/muac_score &lt;19" type="string"/>
       <bind nodeset="/pregnancy_registration/anc_screening/nutrition/mother_diet" required="true()" type="select"/>
       <bind nodeset="/pregnancy_registration/anc_screening/nutrition/diet_msg" readonly="true()" type="string"/>
-      <bind nodeset="/pregnancy_registration/anc_screening/nutrition/weight" required="true()" type="int"/>
+      <bind constraint=". &gt; 0" jr:constraintMsg="cant be negative" nodeset="/pregnancy_registration/anc_screening/nutrition/weight" required="true()" type="int"/>
       <bind nodeset="/pregnancy_registration/anc_screening/nutrition/weight_msg" readonly="true()" relevant=" /pregnancy_registration/anc_screening/nutrition/weight = null" type="string"/>
       <bind nodeset="/pregnancy_registration/anc_screening/nutrition/number_of_pregnancies" required="true()" type="select1"/>
       <bind nodeset="/pregnancy_registration/anc_screening/nutrition/pregnancies_after_seven" required="true()" type="select1"/>
@@ -181,7 +197,7 @@
       <bind nodeset="/pregnancy_registration/anc_screening/nutrition/CHW_msg_factors" readonly="true()" type="string"/>
       <bind nodeset="/pregnancy_registration/anc_screening/danger_signs_group/danger_signs" required="true()" type="select"/>
       <bind nodeset="/pregnancy_registration/anc_screening/danger_signs_group/CHW_msg_danger" readonly="true()" type="string"/>
-      <bind calculate="if( /pregnancy_registration/pregnancy_screening/estimated_date_delivery  != null, /pregnancy_registration/pregnancy_screening/estimated_date_delivery , /pregnancy_registration/pregnancy_test_details/second_estimated_date_delivery )" nodeset="/pregnancy_registration/anc_screening/date_of_delivery" type="string"/>
+      <bind calculate=" /pregnancy_registration/pregnancy_screening/edd " nodeset="/pregnancy_registration/group_review/cal_date_of_delivery" type="string"/>
       <bind nodeset="/pregnancy_registration/group_review/submit" readonly="true()" type="string"/>
       <bind nodeset="/pregnancy_registration/group_review/r_summary_details" readonly="true()" type="string"/>
       <bind nodeset="/pregnancy_registration/group_review/r_patient_details" readonly="true()" type="string"/>
@@ -248,9 +264,11 @@
           <value>btn_7_n_8</value>
         </item>
       </select1>
+      <input appearance="hidden" ref="/pregnancy_registration/pregnancy_screening/ntee">
+        <label>Note is: <output value=" /pregnancy_registration/pregnancy_screening/days_since_lmc "/></label>
+      </input>
       <input ref="/pregnancy_registration/pregnancy_screening/estimated_date_delivery">
-        <label>Estimated Date of Delivery is:</label>
-        <hint>Calculate EDD based on date of last menstrual cycle, Trigger the PNC visit schedule based on EDD</hint>
+        <label>Estimated Date of Delivery is: &lt;span&gt;<output value=" /pregnancy_registration/pregnancy_screening/edd "/>&lt;/span&gt;</label>
       </input>
     </group>
     <group appearance="field-list" ref="/pregnancy_registration/pregnancy_test_details">
@@ -293,8 +311,7 @@
         </item>
       </select1>
       <input ref="/pregnancy_registration/pregnancy_test_details/second_estimated_date_delivery">
-        <label>Estimated Date of Delivery is:</label>
-        <hint>Calculate EDD based on date of last menstrual cycle, Trigger the PNC visit schedule based on EDD</hint>
+        <label>Estimated Date of Delivery is: &lt;span&gt;<output value=" /pregnancy_registration/pregnancy_screening/edd "/>&lt;/span&gt;</label>
       </input>
     </group>
     <group appearance="field-list" ref="/pregnancy_registration/anc_screening">
@@ -666,7 +683,7 @@
       </input>
       <input ref="/pregnancy_registration/group_review/r_patient_details">
         <label>&lt;h4 style=&quot;text-align:center;&quot;&gt;<output value=" /pregnancy_registration/patient_name "/>&lt;/h4&gt; 
-&lt;h5 style=&quot;text-align:center;&quot;&gt;<output value=" /pregnancy_registration/patient_age_in_years "/> years old&lt;/h5&gt; &lt;h5 style=&quot;text-align:center;&quot;&gt;Estimated Date of Delivery: <output value=" /pregnancy_registration/anc_screening/date_of_delivery "/>&lt;/h5&gt; &lt;h5 style=&quot;text-align:center;&quot;&gt;Date of next ANC visit: <output value=" /pregnancy_registration/anc_screening/date_next_visit "/>&lt;/h5&gt;</label>
+&lt;h5 style=&quot;text-align:center;&quot;&gt;<output value=" /pregnancy_registration/patient_age_in_years "/> years old&lt;/h5&gt; &lt;h5 style=&quot;text-align:center;&quot;&gt;Estimated Date of Delivery: <output value=" /pregnancy_registration/group_review/cal_date_of_delivery "/>&lt;/h5&gt; &lt;h5 style=&quot;text-align:center;&quot;&gt;Date of next ANC visit: <output value=" /pregnancy_registration/anc_screening/date_next_visit "/>&lt;/h5&gt;</label>
       </input>
       <input appearance="h1 green" ref="/pregnancy_registration/group_review/r_followup">
         <label>Follow Up&lt;i class="fa fa-flag"&gt;&lt;/i&gt;</label>

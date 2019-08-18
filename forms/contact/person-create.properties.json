@@ -1,8 +1,0 @@
-{
-   "icon": "treatment",
-   "context": {
-       "person": false,
-  		"place": true,
-  		"expression": "contact.type === 'clinic' && user.parent && user.parent.parent && contact.type !== 'person'"
-   	}
-}

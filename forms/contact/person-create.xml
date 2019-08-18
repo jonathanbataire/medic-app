@@ -4,7 +4,7 @@
     <h:title>New Person Registration</h:title>
     <model>
       <instance>
-        <data delimiter="#" id="contact:person:create" prefix="J1!contact:person:create!" version="2019-08-16 11:09:41">
+        <data delimiter="#" id="contact:person:create" prefix="J1!contact:person:create!" version="2019-08-18 07:25:56">
           <inputs>
             <meta>
               <location>
@@ -28,6 +28,7 @@
             <sex/>
             <phone/>
             <alternate_phone/>
+            <pregnant_at_registration/>
             <person_phone>
               <hh_has_phone/>
               <tel_number>
@@ -82,6 +83,7 @@
       <bind calculate=" /data/person/ephemeral_dob/g_sex " nodeset="/data/person/sex" type="string"/>
       <bind calculate=" /data/person/person_phone/tel_number/phone1 " nodeset="/data/person/phone" type="string"/>
       <bind calculate=" /data/person/person_phone/tel_number/phone2 " nodeset="/data/person/alternate_phone" type="string"/>
+      <bind calculate=" /data/person/currently_pregnant " nodeset="/data/person/pregnant_at_registration" type="string"/>
       <bind nodeset="/data/person/person_phone/hh_has_phone" required="true()" type="select1"/>
       <bind nodeset="/data/person/person_phone/tel_number" relevant="selected( /data/person/person_phone/hh_has_phone ,'true')"/>
       <bind constraint="regex(.,'^\+256\s?(\d{3}\s?){3}|^07\d{2}\s?(\d{3}\s?){2}')" jr:constraintMsg="Please make sure the number is not already in use by another person and is in the format +256 7XX XXX XXX or 07XX XXX XXX." nodeset="/data/person/person_phone/tel_number/phone1" required="true()" type="tel"/>
@@ -111,7 +113,7 @@
       <bind nodeset="/data/birth_registration" relevant=" /data/age_in_weeks  &lt; 6"/>
       <bind nodeset="/data/birth_registration/place_of_delivery" type="select1"/>
       <bind nodeset="/data/birth_registration/place_of_delivery_other" relevant="selected( /data/birth_registration/place_of_delivery ,'other')" type="string"/>
-      <bind nodeset="/data/birth_registration/birth_weight" type="decimal"/>
+      <bind constraint=". &gt; 0" jr:constraintMsg="Weight must be greater than zero" nodeset="/data/birth_registration/birth_weight" type="decimal"/>
       <bind calculate="concat('uuid:', uuid())" nodeset="/data/meta/instanceID" readonly="true()" type="string"/>
     </model>
   </h:head>
